@@ -3,4 +3,4 @@ project(cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(nfa main-nfa.cpp nfa.cpp nfa.h)
+add_executable(nfa main-nfa.cpp nfa.cpp nfa.h nfa-executor.cpp nfa-executor.h)
