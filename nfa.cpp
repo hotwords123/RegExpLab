@@ -1,22 +1,36 @@
 #include "nfa.h"
+#include "nfa-executor.h"
+#include <cctype>
 #include <sstream>
 #include "utils.h"
 
-/**
- * 在自动机上执行指定的输入字符串。
- * @param text 输入字符串
- * @return 若拒绝，请 return Path::reject(); 。若接受，请手工构造一个Path的实例并返回。
- */
-Path NFA::exec(std::string text) {
-    // TODO 请你完成这个函数
-    return Path::reject();
+bool Rule::matches(unsigned char ch) const {
+    if (type == NORMAL)
+        return ch == by.front();
+
+    if (type == RANGE)
+        return ch >= by.front() && ch <= to.front();
+
+    if (type == SPECIAL) {
+        switch (by.front()) {
+            case '.': return ch != '\r' && ch != '\n';
+            case 'd': return std::isdigit(ch);
+            case 's': return std::isspace(ch);
+            case 'w': return std::isalnum(ch) || ch == '_';
+            case 'D': return !std::isdigit(ch);
+            case 'S': return !std::isspace(ch);
+            case 'W': return !(std::isalnum(ch) || ch == '_');
+        }
+    }
+
+    return false;
 }
 
-/**
- * 将Path转为（序列化为）文本的表达格式（以便于通过stdout输出）
- * 你不需要理解此函数的含义、阅读此函数的实现和调用此函数。
- */
-std::ostream &operator<<(std::ostream &os, Path &path) {
+Path NFA::exec(const std::string &text) {
+    return NFAExecutor(*this, text).exec();
+}
+
+std::ostream &operator<<(std::ostream &os, const Path &path) {
     if (!path.states.empty()) {
         if (path.consumes.size() != path.states.size() - 1)
             throw std::runtime_error("Path的len(consumes)不等于len(states)-1！");
@@ -28,10 +42,6 @@ std::ostream &operator<<(std::ostream &os, Path &path) {
     return os;
 }
 
-/**
- * 从自动机的文本表示构造自动机
- * 你不需要理解此函数的含义、阅读此函数的实现和调用此函数。
- */
 NFA NFA::from_text(const std::string &text) {
     NFA nfa = NFA();
     bool reading_rules = false;

@@ -2,3 +2,4 @@
 build/
 cases/
 judge/
+*.zip

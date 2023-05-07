@@ -14,7 +14,7 @@ endif()
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
-add_executable(nfa main-nfa.cpp nfa.cpp nfa.h utils.h)
+add_executable(nfa main-nfa.cpp nfa.cpp nfa.h nfa-executor.cpp nfa-executor.h utils.h)
 
 add_executable(regex main-regex.cpp nfa.cpp nfa.h utils.h regex.cpp regex.h
         parser/regexLexer.cpp parser/regexParser.cpp parser/regexBaseListener.cpp parser/regexListener.cpp)

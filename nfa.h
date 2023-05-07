@@ -19,11 +19,11 @@
 /**
  * 用于表示状态转移的类型，和所有可能值的枚举
  */
-enum RuleType {
-    NORMAL = 0, // 一般转移。如 a
-    RANGE = 1, // 字符区间转移。如 a-z
-    SPECIAL = 2, // 特殊转移。如 \d （注意Rule的by属性里面是没有斜杠的，只有一个字母如d）
-    EPSILON = 3, // epsilon-转移。
+enum RuleType : int {
+    NORMAL,  // 一般转移。如 a
+    RANGE,   // 字符区间转移。如 a-z
+    SPECIAL, // 特殊转移。如 \d （注意Rule的by属性里面是没有斜杠的，只有一个字母如d）
+    EPSILON  // epsilon-转移。
 };
 
 /**
@@ -34,6 +34,9 @@ struct Rule {
     RuleType type; // 状态转移的类型，取值见上方的宏定义
     std::string by; // 对特殊字符转移，这里只有一个字母，如d；对字符区间转移，这里是区间的开头，如a；对一般转移，这里就是转移所需的字母；对epsilon-转移，这里固定为空串。
     std::string to; // 对字符区间转移，这里是区间的结尾，如z；对任何其他类型的转移，这里固定为空串。
+
+    // 判断当前规则能否匹配某个字符。
+    bool matches(unsigned char ch) const;
 };
 
 /**
@@ -52,25 +55,27 @@ struct Path {
  * 将Path转为（序列化为）文本的表达格式（以便于通过stdout输出）
  * 你不需要理解此函数的含义、阅读此函数的实现和调用此函数。
  */
-std::ostream &operator<<(std::ostream &os, Path &path);
+std::ostream &operator<<(std::ostream &os, const Path &path);
 
 /**
  * 表示一个NFA的类。
  * 本类定义的自动机，约定状态用编号0~(num_states-1)表示，初态固定为0。
  */
 class NFA {
-public:
     int num_states = 0; // 状态个数
     std::vector<bool> is_final; // 用于判断状态是否为终态的数组，长为num_states。is_final[i]为true表示状态i为终态。
     std::vector<std::vector<Rule>> rules; // 表示所有状态转移规则的二维数组，长为num_states。rules[i]表示从状态i出发的所有转移规则。
 
+    friend class NFAExecutor;
+
+public:
     /**
      * 在自动机上执行指定的输入字符串。
      * TODO 请你完成这个函数；请在nfa.cpp中完成。
      * @param text 输入字符串
      * @return 若拒绝，请 return Path::reject(); 。若接受，请手工构造一个Path的实例并返回。
      */
-    Path exec(std::string text);
+    Path exec(const std::string &text);
 
     /**
      * 从自动机的文本表示构造自动机
@@ -79,4 +84,4 @@ public:
     static NFA from_text(const std::string &text);
 };
 
-#endif //CPP_NFA_H
+#endif // CPP_NFA_H
