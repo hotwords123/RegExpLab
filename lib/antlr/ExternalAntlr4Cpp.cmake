@@ -15,6 +15,9 @@ if(NOT DEFINED ANTLR4_TAG)
   set(ANTLR4_TAG master)
 endif()
 
+cmake_policy(SET CMP0077 NEW)
+option(ANTLR_BUILD_CPP_TESTS "Build C++ tests." ON) # Directly passed to ExternalProject_Add(antlr4_runtime)
+
 # Ensure that the include dir already exists at configure time (to avoid cmake erroring
 # on non-existent include dirs)
 file(MAKE_DIRECTORY "${ANTLR4_INCLUDE_DIRS}")
@@ -37,6 +40,10 @@ if(MSVC)
 else()
   set(ANTLR4_STATIC_LIBRARIES
       ${ANTLR4_OUTPUT_DIR}/libantlr4-runtime.a)
+  if(WIN32)
+    set(ANTLR4_STATIC_LIBRARIES
+        ${ANTLR4_OUTPUT_DIR}/libantlr4-runtime-static.a)
+  endif()
   if(MINGW)
     set(ANTLR4_SHARED_LIBRARIES
         ${ANTLR4_OUTPUT_DIR}/libantlr4-runtime.dll.a)
@@ -94,6 +101,7 @@ if(ANTLR4_ZIP_REPOSITORY)
       SOURCE_DIR ${ANTLR4_ROOT}/runtime/Cpp
 #      SOURCE_SUBDIR runtime/Cpp
       CMAKE_CACHE_ARGS
+          -DANTLR_BUILD_CPP_TESTS:BOOL=${ANTLR_BUILD_CPP_TESTS}
           -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
           -DWITH_STATIC_CRT:BOOL=${ANTLR4_WITH_STATIC_CRT}
           -DDISABLE_WARNINGS:BOOL=ON
@@ -113,6 +121,7 @@ else()
       SOURCE_DIR ${ANTLR4_ROOT}
       SOURCE_SUBDIR runtime/Cpp
       CMAKE_CACHE_ARGS
+          -DANTLR_BUILD_CPP_TESTS:BOOL=${ANTLR_BUILD_CPP_TESTS}
           -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
           -DWITH_STATIC_CRT:BOOL=${ANTLR4_WITH_STATIC_CRT}
           -DDISABLE_WARNINGS:BOOL=ON
@@ -174,4 +183,27 @@ target_include_directories(antlr4_shared
 if(ANTLR4_SHARED_LIBRARIES)
   set_target_properties(antlr4_shared PROPERTIES
                         IMPORTED_IMPLIB ${ANTLR4_SHARED_LIBRARIES})
+endif()
+
+if(NOT ANTLR_BUILD_CPP_TESTS)
+  # if ANTLR_BUILD_CPP_TESTS is OFF, then the target in ${ANTLR4_ROOT}/runtime/Cpp/runtimeCMakeLists.txt
+  # will not copy the generated binaries into into ${ANTLR4_ROOT}/runtime/Cpp/dist.
+  # So, we need to copy them now.
+  set(ANTLR4_RUNTIME_CMAKE_HOME ${ANTLR4_ROOT}/runtime/Cpp/runtime)
+  get_filename_component(ANTLR4_STATIC_LIBRARIES_BASENAME ${ANTLR4_STATIC_LIBRARIES} NAME)
+  get_filename_component(ANTLR4_SHARED_LIBRARIES_BASENAME ${ANTLR4_SHARED_LIBRARIES} NAME)
+  get_filename_component(ANTLR4_RUNTIME_LIBRARIES_BASENAME ${ANTLR4_RUNTIME_LIBRARIES} NAME)
+
+  add_custom_command(
+          TARGET antlr4_runtime-build_shared
+          POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E make_directory ${ANTLR4_OUTPUT_DIR}
+          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_SHARED_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR}
+          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_RUNTIME_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR})
+
+  add_custom_command(
+          TARGET antlr4_runtime-build_static
+          POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E make_directory ${ANTLR4_OUTPUT_DIR}
+          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_STATIC_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR})
 endif()
