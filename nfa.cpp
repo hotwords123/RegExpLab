@@ -1,5 +1,6 @@
 #include "nfa.h"
 #include <sstream>
+#include "utils.h"
 
 /**
  * 在自动机上执行指定的输入字符串。
@@ -35,9 +36,14 @@ NFA NFA::from_text(const std::string &text) {
     NFA nfa = NFA();
     bool reading_rules = false;
     std::istringstream ss(text);
-    std::string line;
+    std::string line, type;
     while (std::getline(ss, line)) {
         if (line.empty()) continue;
+        if (line.find("type:") == 0) {
+            type = strip(line.substr(5));
+            continue;
+        }
+        if (type != "nfa") throw std::runtime_error("输入文件的类型不是nfa！");
         if (line.find("states:") == 0) {
             nfa.num_states = std::stoi(line.substr(7));
             for (int i = 0; i < nfa.num_states; ++i) {

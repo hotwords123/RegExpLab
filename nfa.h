@@ -10,20 +10,21 @@
  * 但是，为了实现功能，你可以自由地增加新的函数、类等，包括可以在已经定义好的类自由地添加新的成员变量和方法。
  */
 /**
- * 在第一次实验中，保证状态转移规则的字母和输入的字符串都仅包含ASCII字符。
+ * 在第一次实验中，保证状态转移规则的字母和输入的字符串都仅包含ASCII字符，且不包含'\0'和换行符'\r' '\n'。
  * 第一次实验要求支持的特殊字符有：\d \w \s \D \W \S \.
  * 前六个的定义同一般正则表达式中的定义，最后一个\.则等同于一般正则表达式中的.，可匹配任何字符。
  * 各个字符的具体定义可查看 https://www.runoob.com/regexp/regexp-metachar.html
  */
 
 /**
- * 用于表示状态转移的类型，和所有可能值的宏定义
+ * 用于表示状态转移的类型，和所有可能值的枚举
  */
-typedef int RuleType;
-#define NORMAL 0 // 一般转移。如 a
-#define RANGE 1 // 字符区间转移。如 a-z
-#define SPECIAL 2 // 特殊转移。如 \d （注意Rule的by属性里面是没有斜杠的，只有一个字母如d）
-#define EPSILON 3 // epsilon-转移。
+enum RuleType {
+    NORMAL = 0, // 一般转移。如 a
+    RANGE = 1, // 字符区间转移。如 a-z
+    SPECIAL = 2, // 特殊转移。如 \d （注意Rule的by属性里面是没有斜杠的，只有一个字母如d）
+    EPSILON = 3, // epsilon-转移。
+};
 
 /**
  * 表示一条状态转移规则。
@@ -42,7 +43,7 @@ struct Rule {
  */
 struct Path {
     std::vector<int> states; // 从初态到终态经历的状态列表。开头必须是0。
-    std::vector<std::string> consumes; // 长度必须为states的长度-1。consumes[i]表示states[i]迁移到states[j]时所消耗的字母（若是不消耗字母的epsilon转移，则设为空串""即可）]
+    std::vector<std::string> consumes; // 长度必须为states的长度-1。consumes[i]表示states[i]迁移到states[i+1]时所消耗的字母（若是不消耗字母的epsilon转移，则设为空串""即可）]
 
     static Path reject() { return Path{}; }
 };
