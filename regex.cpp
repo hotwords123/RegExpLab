@@ -16,12 +16,31 @@
  */
 Regex Regex::compile(const std::string &pattern, const std::string &flags) {
     Regex regex;
-    regexParser::RegexContext *tree = regex.parse(pattern); // 这是语法分析树
-    // TODO 请你完成这个函数
-    // 你应该根据tree中的内容，恰当地构造一个Regex对象和一个NFA
+    regexParser::RegexContext *tree = regex.parse(pattern);
 
+    // 使用 listener 遍历语法树，对每棵子树编译得到 NFA 片段
     RegexCompileListener listener(regex);
     antlr4::tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
+
+    // 加入初态 0 和终态 1
+    regex.nfa.append_states(2);
+    regex.nfa.is_final[1] = true;
+
+    // 把编译得到的片段组装成完整的 NFA
+    NFAFragment *fragment = listener.getFragment(tree);
+    fragment->assemble(regex.nfa, 0, 1);
+
+    // 允许从任意位置开始匹配
+    regex.nfa.rules[0].push_back({ 0, SPECIAL, "." });
+
+    // 输出构造的自动机
+    printf("states: %d\n", regex.nfa.num_states);
+    for (int i = 0; i < regex.nfa.num_states; i++) {
+        for (auto &rule : regex.nfa.rules[i]) {
+            const char types[][9] = {"normal", "range", "special", "epsilon"};
+            printf("%d->%d %s %s %s\n", i, rule.dst, types[rule.type], rule.by.c_str(), rule.to.c_str());
+        }
+    }
 
     return regex;
 }
@@ -36,8 +55,20 @@ Regex Regex::compile(const std::string &pattern, const std::string &flags) {
  * @return 如上所述
  */
 std::vector<std::string> Regex::match(const std::string &text) {
-    // TODO 请你完成这个函数
-    return {};
+    Path path = nfa.exec(text, true);
+    if (path.states.size() == 0) return {};
+
+    // 计算匹配开始的位置
+    int offset = 0;
+    while (path.states[offset + 1] == 0) offset++;
+
+    // 计算匹配的长度
+    int length = 0;
+    for (int i = offset; i < (int)path.consumes.size(); i++) {
+        length += path.consumes[i].length();
+    }
+
+    return { text.substr(offset, length) };
 }
 
 /**
@@ -52,11 +83,11 @@ regexParser::RegexContext *Regex::parse(const std::string &pattern) {
     if (antlrInputStream)
         throw std::runtime_error("此Regex对象已被调用过一次parse函数，不可以再次调用！");
 
-    antlrInputStream.reset(new antlr4::ANTLRInputStream(pattern));
-    antlrLexer.reset(new regexLexer(antlrInputStream.get()));
+    antlrInputStream = std::make_unique<antlr4::ANTLRInputStream>(pattern);
+    antlrLexer = std::make_unique<regexLexer>(antlrInputStream.get());
 
-    antlrTokenStream.reset(new antlr4::CommonTokenStream(antlrLexer.get()));
-    antlrParser.reset(new regexParser(antlrTokenStream.get()));
+    antlrTokenStream = std::make_unique<antlr4::CommonTokenStream>(antlrLexer.get());
+    antlrParser = std::make_unique<regexParser>(antlrTokenStream.get());
 
     regexParser::RegexContext *tree = antlrParser->regex();
     if (!tree)

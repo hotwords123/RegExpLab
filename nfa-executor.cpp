@@ -16,7 +16,7 @@ bool NFAExecutor::dfs(int state, int pos) {
     path.states.push_back(state);
 
     // 判断终态
-    if (pos == text.size() && nfa.is_final[state])
+    if ((accept_prefix || pos == text.size()) && nfa.is_final[state])
         return true;
 
     // 枚举 state 的所有转移规则

@@ -7,13 +7,13 @@ void NFAFragment::assemble(NFA &nfa, int initial, int final) const {
 
     // get the state index in nfa
     auto state_index = [&](NodeId id) {
-        if (id == kInitial) return initial;
-        if (id == kFinal) return final;
+        if (id < 0) return initial;
+        if (id >= num_nodes) return final;
         return state_offset + id;
     };
 
     // add transition rules to nfa
-    for (auto &edge : simple_edges) {
+    for (auto &edge : rule_edges) {
         int from = state_index(edge.from);
         int to = state_index(edge.to);
         Rule &rule = nfa.rules[from].emplace_back(edge.rule);

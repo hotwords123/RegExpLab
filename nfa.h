@@ -46,6 +46,7 @@ class NFA {
 
     friend class NFAExecutor;
     friend class NFAFragment;
+    friend class Regex;
 
 public:
     /**
@@ -59,9 +60,10 @@ public:
      * 在自动机上执行指定的输入字符串。
      * TODO 请你完成这个函数；请在nfa.cpp中完成。
      * @param text 输入字符串
+     * @param accept_prefix 允许只接受输入串的一个前缀
      * @return 若拒绝，请 return Path::reject(); 。若接受，请手工构造一个Path的实例并返回。
      */
-    Path exec(const std::string &text);
+    Path exec(const std::string &text, bool accept_prefix = false);
 
     /**
      * 从自动机的文本表示构造自动机

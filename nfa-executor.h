@@ -25,12 +25,13 @@ struct std::hash<std::pair<T1, T2>> {
 class NFAExecutor {
     const NFA &nfa;
     std::string text;
+    bool accept_prefix; // 是否允许只接受输入串的一个前缀
     Path path;
     std::unordered_set<std::pair<int, int>> visited; // 缓存访问过的状态
 
 public:
-    NFAExecutor(const NFA &nfa, const std::string &text)
-        : nfa(nfa), text(text) {}
+    NFAExecutor(const NFA &nfa, const std::string &text, bool accept_prefix = false)
+        : nfa(nfa), text(text), accept_prefix(accept_prefix) {}
 
     // 在自动机上执行字符串。在同一个实例上，此方法只应被调用一次。
     Path exec();

@@ -11,8 +11,8 @@ int NFA::append_states(int count) {
     return offset;
 }
 
-Path NFA::exec(const std::string &text) {
-    return NFAExecutor(*this, text).exec();
+Path NFA::exec(const std::string &text, bool accept_prefix) {
+    return NFAExecutor(*this, text, accept_prefix).exec();
 }
 
 std::ostream &operator<<(std::ostream &os, const Path &path) {
