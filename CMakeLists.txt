@@ -10,6 +10,7 @@ include(ExternalAntlr4Cpp)
 message(STATUS "Found antlr4 static libs: ${ANTLR4_STATIC_LIBRARIES} and includes: ${ANTLR4_INCLUDE_DIRS} ")
 
 if(MINGW)
+    add_compile_options(-Wall -Wextra -Wno-missing-field-initializers)
     add_link_options(-static -static-libgcc -static-libstdc++)
 endif()
 

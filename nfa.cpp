@@ -19,7 +19,7 @@ std::ostream &operator<<(std::ostream &os, const Path &path) {
     if (!path.states.empty()) {
         if (path.consumes.size() != path.states.size() - 1)
             throw std::runtime_error("Path的len(consumes)不等于len(states)-1！");
-        for (int i = 0; i < path.consumes.size(); ++i) {
+        for (int i = 0; i < (int)path.consumes.size(); ++i) {
             os << path.states[i] << " " << path.consumes[i] << " ";
         }
         os << path.states[path.states.size() - 1];

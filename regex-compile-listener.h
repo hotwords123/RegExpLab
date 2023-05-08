@@ -17,7 +17,7 @@ public:
     RegexCompileListener(Regex &regex);
 
     // 在 fragments 中为子树创建 NFA 片段
-    NFAFragment *createFragment(antlr4::RuleContext *ctx, int num_nodes);
+    NFAFragment *createFragment(antlr4::RuleContext *ctx, int num_nodes = 0);
 
     // 返回子树的 NFA 片段
     NFAFragment *getFragment(antlr4::RuleContext *ctx) const;
@@ -26,8 +26,6 @@ public:
     void exitExpression(regexParser::ExpressionContext *) override;
     void exitExpressionItem(regexParser::ExpressionItemContext *) override;
     void exitNormalItem(regexParser::NormalItemContext *) override;
-    void exitGroup(regexParser::GroupContext *) override;
-    void exitSingle(regexParser::SingleContext *) override;
     void exitCharacterGroup(regexParser::CharacterGroupContext *) override;
 };
 

@@ -16,7 +16,7 @@ bool NFAExecutor::dfs(int state, int pos) {
     path.states.push_back(state);
 
     // 判断终态
-    if ((accept_prefix || pos == text.size()) && nfa.is_final[state])
+    if ((accept_prefix || pos == (int)text.size()) && nfa.is_final[state])
         return true;
 
     // 枚举 state 的所有转移规则
@@ -26,7 +26,7 @@ bool NFAExecutor::dfs(int state, int pos) {
             if (dfs(rule.dst, pos))
                 return true;
             path.consumes.pop_back();
-        } else if (pos != text.size() && rule.matches(text[pos])) { // 字符转移
+        } else if (pos != (int)text.size() && rule.matches(text[pos])) { // 字符转移
             path.consumes.push_back(std::string(1, text[pos]));
             if (dfs(rule.dst, pos + 1))
                 return true;

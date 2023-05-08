@@ -18,9 +18,9 @@ NFAFragment *RegexCompileListener::getFragment(antlr4::RuleContext *ctx) const {
 void RegexCompileListener::exitRegex(regexParser::RegexContext *ctx) {
     auto expressions = ctx->expression();
 
-    auto fragment = createFragment(ctx, 0);
+    auto fragment = createFragment(ctx);
     for (auto expression : expressions) {
-        fragment->addFragment(-1, 0, getFragment(expression));
+        fragment->addFragment(0, 1, getFragment(expression));
     }
 }
 
@@ -28,73 +28,110 @@ void RegexCompileListener::exitRegex(regexParser::RegexContext *ctx) {
 void RegexCompileListener::exitExpression(regexParser::ExpressionContext *ctx) {
     auto expressionItems = ctx->expressionItem();
     int count = expressionItems.size();
-    printf("expression item count = %d\n", count);
 
     auto fragment = createFragment(ctx, count - 1);
     for (int i = 0; i < count; i++) {
-        fragment->addFragment(i - 1, i, getFragment(expressionItems[i]));
+        fragment->addFragment(i, i + 1, getFragment(expressionItems[i]));
     }
 }
 
 // expressionItem : normalItem quantifier? ;
 void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext *ctx) {
     auto normalItem = ctx->normalItem();
-    auto quantifier = ctx->quantifier();
+    auto itemFragment = getFragment(normalItem);
 
-    // TODO: quantifier support
-    auto fragment = createFragment(ctx, 0);
-    fragment->addFragment(-1, 0, getFragment(normalItem));
-}
+    int min_count = 1, max_count = 1;
+    bool greedy = true;
 
-// normalItem : single | group ;
-void RegexCompileListener::exitNormalItem(regexParser::NormalItemContext *ctx) {
-    auto fragment = createFragment(ctx, 0);
-    if (auto single = ctx->single()) {
-        fragment->addFragment(-1, 0, getFragment(single));
-    } else if (auto group = ctx->group()) {
-        fragment->addFragment(-1, 0, getFragment(group));
+    if (auto quantifier = ctx->quantifier()) {
+        auto quantifierType = quantifier->quantifierType();
+        if (quantifierType->ZeroOrMoreQuantifier()) {
+            min_count = 0;
+            max_count = -1;
+        } else if (quantifierType->OneOrMoreQuantifier()) {
+            min_count = 1;
+            max_count = -1;
+        } else if (quantifierType->ZeroOrOneQuantifier()) {
+            min_count = 0;
+            max_count = 1;
+        }
+
+        if (quantifier->lazyModifier()) greedy = false;
+    }
+
+    auto fragment = createFragment(ctx);
+    if (max_count == -1) {
+        if (min_count == 0) { // E*
+            fragment->num_nodes = 1;
+            fragment->addEpsilonRule(0, 1);
+            fragment->addFragment(1, 1, itemFragment);
+            fragment->addEpsilonRule(1, 2, greedy);
+        } else if (min_count == 1) { // E+
+            fragment->num_nodes = 2;
+            fragment->addEpsilonRule(0, 1);
+            fragment->addFragment(1, 2, itemFragment);
+            fragment->addEpsilonRule(2, 3, greedy);
+            fragment->addEpsilonRule(2, 1);
+        } else { // E{>=2,}
+            fragment->num_nodes = min_count;
+            for (int i = 0; i < min_count; i++) {
+                fragment->addFragment(i, i + 1, itemFragment);
+            }
+            fragment->addEpsilonRule(min_count, min_count + 1, greedy);
+            fragment->addEpsilonRule(min_count, min_count - 1);
+        }
+    } else if (max_count > 0) { // E{a,b}
+        fragment->num_nodes = max_count - 1;
+        for (int i = 0; i < max_count; i++) {
+            fragment->addFragment(i, i + 1, itemFragment);
+            if (i >= min_count) {
+                fragment->addEpsilonRule(i, max_count, greedy);
+            }
+        }
+    } else { // E{0}
+        fragment->addEpsilonRule(0, 1);
     }
 }
 
-// group : '(' regex ')' ;
-void RegexCompileListener::exitGroup(regexParser::GroupContext *ctx) {
-    auto fragment = createFragment(ctx, 0);
-    auto regex = ctx->regex();
-    fragment->addFragment(-1, 0, getFragment(regex));
-}
-
+// normalItem : single | group ;
 // single : char | characterClass | AnyCharacter | characterGroup ;
-void RegexCompileListener::exitSingle(regexParser::SingleContext *ctx) {
-    auto fragment = createFragment(ctx, 0);
-    if (auto char_ = ctx->char_()) {
-        // 不论字符是否被转义，取最后一位即可
-        fragment->addNormalRule(-1, 0, char_->getText().back());
-    } else if (auto characterClass = ctx->characterClass()) {
-        // 字符类别同样取最后一位用于区分
-        fragment->addSpecialRule(-1, 0, characterClass->getText().back());
-    } else if (ctx->AnyCharacter()) {
-        fragment->addSpecialRule(-1, 0, '.');
-    } else if (auto characterGroup = ctx->characterGroup()) {
-        fragment->addFragment(-1, 0, getFragment(characterGroup));
+// group : '(' regex ')' ;
+void RegexCompileListener::exitNormalItem(regexParser::NormalItemContext *ctx) {
+    auto fragment = createFragment(ctx);
+    if (auto single = ctx->single()) {
+        if (auto char_ = single->char_()) {
+            // 不论字符是否被转义，取最后一位即可
+            fragment->addNormalRule(0, 1, char_->getText().back());
+        } else if (auto characterClass = single->characterClass()) {
+            // 字符类别同样取最后一位用于区分
+            fragment->addSpecialRule(0, 1, characterClass->getText().back());
+        } else if (single->AnyCharacter()) {
+            fragment->addSpecialRule(0, 1, '.');
+        } else if (auto characterGroup = single->characterGroup()) {
+            fragment->addFragment(0, 1, getFragment(characterGroup));
+        }
+    } else if (auto group = ctx->group()) {
+        auto regex = group->regex();
+        fragment->addFragment(0, 1, getFragment(regex));
     }
 }
 
 // characterGroup : '[' characterGroupNegativeModifier? characterGroupItem+ ']';
 // characterGroupItem : charInGroup | characterClass | characterRange ;
 void RegexCompileListener::exitCharacterGroup(regexParser::CharacterGroupContext *ctx) {
-    auto fragment = createFragment(ctx, 0);
+    auto fragment = createFragment(ctx);
 
     auto groupItems = ctx->characterGroupItem();
     for (auto groupItem : groupItems) {
         if (auto charInGroup = groupItem->charInGroup()) {
-            fragment->addNormalRule(-1, 0, charInGroup->getText().back());
+            fragment->addNormalRule(0, 1, charInGroup->getText().back());
         } else if (auto characterClass = groupItem->characterClass()) {
-            fragment->addSpecialRule(-1, 0, characterClass->getText().back());
+            fragment->addSpecialRule(0, 1, characterClass->getText().back());
         } else if (auto characterRange = groupItem->characterRange()) {
             auto chars = characterRange->charInGroup();
             char lbound = chars[0]->getText().back();
             char ubound = chars[1]->getText().back();
-            fragment->addRangeRule(-1, 0, lbound, ubound);
+            fragment->addRangeRule(0, 1, lbound, ubound);
         }
     }
 

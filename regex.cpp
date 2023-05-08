@@ -14,7 +14,7 @@
  * @param flags 正则表达式的修饰符（第二次实验不要求支持，保证传入的永远是空串）
  * @return Regex类的对象
  */
-Regex Regex::compile(const std::string &pattern, const std::string &flags) {
+Regex Regex::compile(const std::string &pattern, const std::string & /*flags*/) {
     Regex regex;
     regexParser::RegexContext *tree = regex.parse(pattern);
 
