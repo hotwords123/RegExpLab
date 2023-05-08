@@ -54,8 +54,7 @@ int main(int argc, char *argv[]) {
         throw std::runtime_error("pattern或input未找到！注意pattern: 和input: ，冒号后面必须有空格！");
 
     if (type == "find") {
-        Regex regex;
-        regex.compile(pattern, flags);
+        Regex regex = regex.compile(pattern, flags);
         std::vector<std::string> matchRes = regex.match(input_str);
         nlohmann::json jsonArr(matchRes);
         std::cout << jsonArr << std::endl;

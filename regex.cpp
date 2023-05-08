@@ -1,4 +1,5 @@
 #include "regex.h"
+#include "regex-compile-listener.h"
 
 /**
  * 注：如果你愿意，你可以自由的using namespace。
@@ -14,11 +15,14 @@
  * @return Regex类的对象
  */
 Regex Regex::compile(const std::string &pattern, const std::string &flags) {
-    regexParser::RegexContext *tree = Regex::parse(pattern); // 这是语法分析树
+    Regex regex;
+    regexParser::RegexContext *tree = regex.parse(pattern); // 这是语法分析树
     // TODO 请你完成这个函数
     // 你应该根据tree中的内容，恰当地构造一个Regex对象和一个NFA
-    Regex regex = Regex();
-    // regex.nfa.xxx = xxx....
+
+    RegexCompileListener listener(regex);
+    antlr4::tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
+
     return regex;
 }
 
@@ -31,7 +35,7 @@ Regex Regex::compile(const std::string &pattern, const std::string &flags) {
  * @param text 输入的文本
  * @return 如上所述
  */
-std::vector<std::string> Regex::match(std::string text) {
+std::vector<std::string> Regex::match(const std::string &text) {
     // TODO 请你完成这个函数
     return {};
 }
@@ -45,22 +49,25 @@ std::vector<std::string> Regex::match(std::string text) {
  * @return RegexContext类的对象的指针。保证不为空指针。
  */
 regexParser::RegexContext *Regex::parse(const std::string &pattern) {
-    if (antlrInputStream) throw std::runtime_error("此Regex对象已被调用过一次parse函数，不可以再次调用！");
-    antlrInputStream = new antlr4::ANTLRInputStream(pattern);
-    antlrLexer = new regexLexer(antlrInputStream);
-    antlrTokenStream = new antlr4::CommonTokenStream(antlrLexer);
-    antlrParser = new regexParser(antlrTokenStream);
+    if (antlrInputStream)
+        throw std::runtime_error("此Regex对象已被调用过一次parse函数，不可以再次调用！");
+
+    antlrInputStream.reset(new antlr4::ANTLRInputStream(pattern));
+    antlrLexer.reset(new regexLexer(antlrInputStream.get()));
+
+    antlrTokenStream.reset(new antlr4::CommonTokenStream(antlrLexer.get()));
+    antlrParser.reset(new regexParser(antlrTokenStream.get()));
+
     regexParser::RegexContext *tree = antlrParser->regex();
-    if (!tree) throw std::runtime_error("parser解析失败(函数返回了nullptr)");
+    if (!tree)
+        throw std::runtime_error("parser解析失败(函数返回了nullptr)");
+
     auto errCount = antlrParser->getNumberOfSyntaxErrors();
-    if (errCount > 0) throw std::runtime_error("parser解析失败，表达式中有" + std::to_string(errCount) + "个语法错误！");
+    if (errCount > 0)
+        throw std::runtime_error("parser解析失败，表达式中有" + std::to_string(errCount) + "个语法错误！");
+
     return tree;
 }
 
 // 此析构函数是为了管理ANTLR语法分析树所使用的内存的。你不需要阅读和理解它。
-Regex::~Regex() {
-    delete antlrInputStream;
-    delete antlrLexer;
-    delete antlrTokenStream;
-    delete antlrParser;
-}
+Regex::~Regex() {}

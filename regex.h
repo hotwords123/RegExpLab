@@ -4,6 +4,7 @@
 #include "nfa.h"
 #include "parser/regexLexer.h"
 #include "parser/regexParser.h"
+#include <memory>
 
 /**
  * 本文件（包括对应的cpp文件）中已经定义好了一些类和函数，类内也已经定义好了一些成员变量和方法。不建议大家修改这些已经定义好的东西。
@@ -26,18 +27,13 @@
  * 表示一个正则表达式的类。
  */
 class Regex {
-public:
     NFA nfa; // 正则表达式所使用的NFA
 
-    /**
-     * 解析正则表达式的字符串，生成语法分析树。
-     * 你应该在compile函数中调用一次本函数，以得到语法分析树。
-     * 通常，你不需要改动此函数，也不需要理解此函数实现每一行的具体含义。
-     * 但是，你应当对语法分析树的数据结构(RegexContext)有一定的理解，作业文档中有相关的教程可供参考。
-     * @param pattern 要解析的正则表达式的字符串
-     * @return RegexContext类的对象的指针。保证不为空指针。
-     */
-    regexParser::RegexContext *parse(const std::string &pattern);
+    friend class RegexCompileListener;
+
+public:
+    Regex() = default;
+    Regex(Regex &&) = default;
 
     /**
      * 编译给定的正则表达式，构造出Regex对象。
@@ -48,7 +44,7 @@ public:
      * @param flags 正则表达式的修饰符（第二次实验不要求支持，保证传入的永远是空串）
      * @return Regex类的对象
      */
-    Regex compile(const std::string &pattern, const std::string &flags = "");
+    static Regex compile(const std::string &pattern, const std::string &flags = "");
 
     /**
      * 在给定的输入文本上，进行正则表达式匹配，返回匹配到的第一个结果。
@@ -59,16 +55,26 @@ public:
      * @param text 输入的文本
      * @return 如上所述
      */
-    std::vector<std::string> match(std::string text);
+    std::vector<std::string> match(const std::string &text);
 
     // 析构函数，和以下那些private变量，是为了管理ANTLR语法分析树所使用的内存的。你不需要阅读和理解它们。
     ~Regex();
 
 private:
-    antlr4::ANTLRInputStream *antlrInputStream = nullptr;
-    regexLexer *antlrLexer = nullptr;
-    antlr4::CommonTokenStream *antlrTokenStream = nullptr;
-    regexParser *antlrParser = nullptr;
+    std::unique_ptr<antlr4::ANTLRInputStream> antlrInputStream;
+    std::unique_ptr<regexLexer> antlrLexer;
+    std::unique_ptr<antlr4::CommonTokenStream> antlrTokenStream;
+    std::unique_ptr<regexParser> antlrParser;
+
+    /**
+     * 解析正则表达式的字符串，生成语法分析树。
+     * 你应该在compile函数中调用一次本函数，以得到语法分析树。
+     * 通常，你不需要改动此函数，也不需要理解此函数实现每一行的具体含义。
+     * 但是，你应当对语法分析树的数据结构(RegexContext)有一定的理解，作业文档中有相关的教程可供参考。
+     * @param pattern 要解析的正则表达式的字符串
+     * @return RegexContext类的对象的指针。保证不为空指针。
+     */
+    regexParser::RegexContext *parse(const std::string &pattern);
 };
 
-#endif //CPP_REGEX_H
+#endif // CPP_REGEX_H

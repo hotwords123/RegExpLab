@@ -12,14 +12,24 @@ message(STATUS "Found antlr4 static libs: ${ANTLR4_STATIC_LIBRARIES} and include
 if(MINGW)
     add_link_options(-static -static-libgcc -static-libstdc++)
 endif()
+
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
-add_executable(nfa main-nfa.cpp nfa.cpp nfa.h nfa-executor.cpp nfa-executor.h utils.h)
+add_executable(nfa main-nfa.cpp
+    nfa.cpp nfa.h rule.cpp rule.h nfa-executor.cpp nfa-executor.h utils.h
+)
 
-add_executable(regex main-regex.cpp regex.cpp regex.h
-        nfa.cpp nfa.h nfa-executor.cpp nfa-executor.h utils.h
-        parser/regexLexer.cpp parser/regexParser.cpp parser/regexBaseListener.cpp parser/regexListener.cpp)
+add_executable(regex main-regex.cpp
+    nfa.cpp nfa.h rule.cpp rule.h nfa-executor.cpp nfa-executor.h utils.h
+    regex.cpp regex.h nfa-fragment.cpp nfa-fragment.h
+    regex-compile-listener.cpp regex-compile-listener.h
+    parser/regexLexer.cpp parser/regexLexer.h
+    parser/regexParser.cpp parser/regexParser.h
+    parser/regexListener.cpp parser/regexListener.h
+    parser/regexBaseListener.cpp parser/regexBaseListener.h
+)
+
 add_dependencies(regex antlr4_static)
 target_link_libraries(regex antlr4_static)
 target_compile_definitions(regex PUBLIC ANTLR4CPP_STATIC)
