@@ -7,27 +7,27 @@
 class NFA;
 
 struct NFAFragment {
-    enum StateId : int {
+    enum NodeId : int {
         kInitial = -1,
         kFinal = -2
     };
 
-    struct Transition {
-        StateId from;
-        StateId to;
+    struct Edge {
+        NodeId from;
+        NodeId to;
     };
 
-    struct SimpleTransition : Transition {
+    struct SimpleEdge : Edge {
         Rule rule;
     };
 
-    struct FragmentTransition : Transition {
+    struct FragmentEdge : Edge {
         NFAFragment *fragment;
     };
 
-    int num_states;
-    std::vector<SimpleTransition> simple_trans;
-    std::vector<SimpleTransition> fragment_trans;
+    int num_nodes;
+    std::vector<SimpleEdge> simple_edges;
+    std::vector<FragmentEdge> fragment_edges;
 
     void assemble(NFA &nfa, int initial, int final) const;
 };

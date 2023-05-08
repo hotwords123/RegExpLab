@@ -45,8 +45,16 @@ class NFA {
     std::vector<std::vector<Rule>> rules; // 表示所有状态转移规则的二维数组，长为num_states。rules[i]表示从状态i出发的所有转移规则。
 
     friend class NFAExecutor;
+    friend class NFAFragment;
 
 public:
+    /**
+     * 向自动机中加入新状态。
+     * @param count 状态数量
+     * @return 加入的首个状态的下标
+     */
+    int append_states(int count);
+
     /**
      * 在自动机上执行指定的输入字符串。
      * TODO 请你完成这个函数；请在nfa.cpp中完成。

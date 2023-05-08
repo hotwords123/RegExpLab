@@ -3,6 +3,14 @@
 #include <sstream>
 #include "utils.h"
 
+int NFA::append_states(int count) {
+    int offset = num_states;
+    num_states += count;
+    is_final.resize(num_states);
+    rules.resize(num_states);
+    return offset;
+}
+
 Path NFA::exec(const std::string &text) {
     return NFAExecutor(*this, text).exec();
 }
