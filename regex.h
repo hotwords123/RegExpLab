@@ -29,6 +29,11 @@
 class Regex {
     NFA nfa; // 正则表达式所使用的NFA
 
+    std::unique_ptr<antlr4::ANTLRInputStream> antlrInputStream;
+    std::unique_ptr<regexLexer> antlrLexer;
+    std::unique_ptr<antlr4::CommonTokenStream> antlrTokenStream;
+    std::unique_ptr<regexParser> antlrParser;
+
     friend class RegexCompileListener;
 
 public:
@@ -61,11 +66,6 @@ public:
     ~Regex();
 
 private:
-    std::unique_ptr<antlr4::ANTLRInputStream> antlrInputStream;
-    std::unique_ptr<regexLexer> antlrLexer;
-    std::unique_ptr<antlr4::CommonTokenStream> antlrTokenStream;
-    std::unique_ptr<regexParser> antlrParser;
-
     /**
      * 解析正则表达式的字符串，生成语法分析树。
      * 你应该在compile函数中调用一次本函数，以得到语法分析树。

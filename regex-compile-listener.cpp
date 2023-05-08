@@ -135,5 +135,26 @@ void RegexCompileListener::exitCharacterGroup(regexParser::CharacterGroupContext
         }
     }
 
-    // TODO: negative modifier
+    if (ctx->characterGroupNegativeModifier()) {
+        // 枚举 ASCII 字符并判断能否匹配
+        std::vector<bool> mask(128, true);
+        for (int i = 0; i < 128; i++) {
+            for (const auto &edge : fragment->rule_edges) {
+                if (edge.rule.matches(i)) {
+                    mask[i] = false;
+                    break;
+                }
+            }
+        }
+
+        // 构造新的迁移边
+        fragment->rule_edges.clear();
+        for (int i = 0; i < 128; i++) {
+            int start = i;
+            while (i < 128 && mask[i]) i++;
+            if (i != start) { // 对 ASCII 码连续的可匹配字符构造区间转移
+                fragment->addRangeRule(0, 1, start, i - 1);
+            }
+        }
+    }
 }
