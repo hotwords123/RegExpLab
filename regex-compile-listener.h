@@ -19,6 +19,7 @@ public:
     void exitRegex(regexParser::RegexContext *) override;
     void exitExpression(regexParser::ExpressionContext *) override;
     void exitExpressionItem(regexParser::ExpressionItemContext *) override;
+    void enterNormalItem(regexParser::NormalItemContext *) override;
     void exitNormalItem(regexParser::NormalItemContext *) override;
     void exitCharacterGroup(regexParser::CharacterGroupContext *) override;
 

@@ -143,8 +143,19 @@ static char parseChar(const std::string &text) {
 // normalItem : single | group ;
 // single : char | characterClass | AnyCharacter | characterGroup ;
 // group : '(' regex ')' ;
-void RegexCompileListener::exitNormalItem(regexParser::NormalItemContext *ctx) {
+void RegexCompileListener::enterNormalItem(regexParser::NormalItemContext *ctx) {
     auto fragment = createFragment(ctx);
+
+    if (auto group = ctx->group()) { // 预处理捕获组
+        if (!group->GroupNonCapturingModifier()) {
+            // 记录捕获组的编号
+            fragment->group_index = ++regex.group_count;
+        }
+    }
+}
+
+void RegexCompileListener::exitNormalItem(regexParser::NormalItemContext *ctx) {
+    auto fragment = getFragment(ctx);
     if (auto single = ctx->single()) {
         if (auto char_ = single->char_()) {
             // 解析普通字符并添加普通转移
@@ -159,7 +170,17 @@ void RegexCompileListener::exitNormalItem(regexParser::NormalItemContext *ctx) {
         }
     } else if (auto group = ctx->group()) {
         auto regex = group->regex();
-        fragment->addFragment(0, 1, getFragment(regex));
+        auto regex_fragment = getFragment(regex);
+
+        if (fragment->group_index > 0) { // 捕获组
+            // 添加额外状态，以便根据匹配路径找出捕获组在输入串中的位置
+            fragment->num_nodes = 2;
+            fragment->addEpsilonRule(0, 1);
+            fragment->addFragment(1, 2, regex_fragment);
+            fragment->addEpsilonRule(2, 3);
+        } else { // 非捕获组
+            fragment->addFragment(0, 1, regex_fragment);
+        }
     }
 }
 
@@ -214,7 +235,7 @@ void RegexCompileListener::buildFrom(regexParser::RegexContext *tree) {
     regex.nfa.append_states(2);
     regex.nfa.set_final(1, true);
 
-    // 把编译得到的片段组装成完整的 NFA
+    // 把编译得到的片段组装成完整的 NFA，并记录捕获组的开始和结束状态
     NFAFragment *fragment = getFragment(tree);
     assemble(fragment, 0, 1);
 
@@ -229,6 +250,7 @@ void RegexCompileListener::assemble(const NFAFragment *fragment, int initial, in
 
     // 在 NFA 中添加所需的额外状态
     int state_offset = nfa.append_states(fragment->num_nodes);
+    regex.group_map.resize(nfa.state_count());
 
     // 计算 NFA 中状态的下标
     auto stateIndex = [&](NFAFragment::NodeId id) {
@@ -236,6 +258,12 @@ void RegexCompileListener::assemble(const NFAFragment *fragment, int initial, in
         if (id > fragment->num_nodes) return final;
         return state_offset + (id - 1);
     };
+
+    // 记录捕获组的开始和结束状态
+    if (fragment->group_index > 0) {
+        regex.group_map[stateIndex(1)] = fragment->group_index;
+        regex.group_map[stateIndex(2)] = fragment->group_index;
+    }
 
     // 将迁移边从片段复制到 NFA 中
     auto copyRule = [&](const NFAFragment::RuleEdge &edge) {

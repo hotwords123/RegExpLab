@@ -38,17 +38,47 @@ std::vector<std::string> Regex::match(const std::string &text) {
     Path path = nfa.exec(text, true);
     if (path.states.size() == 0) return {};
 
-    // 计算匹配开始的位置
-    int offset = 0;
-    while (path.states[offset + 1] == 0) offset++;
+    // 捕获组匹配子串的起始位置
+    std::vector<std::pair<int, int>> group_pos(group_count + 1);
+    // 当前是否处在捕获组中
+    std::vector<bool> in_group(group_count + 1);
 
-    // 计算匹配的长度
-    int length = 0;
-    for (int i = offset; i < (int)path.consumes.size(); i++) {
-        length += path.consumes[i].length();
+    // 计算匹配开始的位置
+    int step = 0;
+    while (path.states[step + 1] == 0) step++;
+
+    int pos = step;
+    group_pos[0].first = pos;
+    in_group[0] = true;
+
+    // 计算捕获组的匹配位置
+    for (; step < (int)path.consumes.size(); step++) {
+        int state = path.states[step + 1]; // 当前状态
+        pos += path.consumes[step].length();
+
+        if (int index = group_map[state]) { // 找到对应的捕获组
+            if (!in_group[index]) { // 捕获组开始
+                group_pos[index].first = pos;
+                in_group[index] = true;
+            } else { // 捕获组结束
+                group_pos[index].second = pos;
+                in_group[index] = false;
+            }
+        }
     }
 
-    return { text.substr(offset, length) };
+    // 计算匹配结束的位置
+    group_pos[0].second = pos;
+    in_group[0] = false;
+
+    // 生成匹配结果
+    std::vector<std::string> results;
+    results.reserve(group_count + 1);
+    for (auto [begin, end] : group_pos) {
+        // TODO: 处理捕获组未匹配的情况
+        results.push_back(text.substr(begin, end - begin));
+    }
+    return results;
 }
 
 /**

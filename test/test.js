@@ -63,7 +63,7 @@ async function main() {
         try {
           const output = await run(pattern, input);
           const answer = Array.from(regex.exec(input) || []);
-          answer.splice(1);
+          // answer.splice(1);
           if (!util.isDeepStrictEqual(output, answer))
             throw new Error(`output mismatch: ${JSON.stringify(output)} != ${JSON.stringify(answer)}`);
           // console.log("[case] ok:", pattern, input);

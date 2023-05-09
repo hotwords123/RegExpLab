@@ -29,6 +29,9 @@
 class Regex {
     NFA nfa; // 正则表达式所使用的NFA
 
+    int group_count = 0; // 捕获组数量
+    std::vector<int> group_map; // 每个状态对应的捕获组编号，0 表示没有对应的捕获组
+
     std::unique_ptr<antlr4::ANTLRInputStream> antlrInputStream;
     std::unique_ptr<regexLexer> antlrLexer;
     std::unique_ptr<antlr4::CommonTokenStream> antlrTokenStream;

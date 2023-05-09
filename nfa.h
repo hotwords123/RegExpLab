@@ -79,6 +79,8 @@ public:
         is_final[state] = flag;
     }
 
+    int state_count() const { return num_states; }
+
     /**
      * 在自动机上执行指定的输入字符串。
      * TODO 请你完成这个函数；请在nfa.cpp中完成。

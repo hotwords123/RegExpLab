@@ -29,6 +29,7 @@ struct NFAFragment {
     };
 
     int num_nodes;
+    int group_index;
     std::vector<RuleEdge> rule_edges;
     std::vector<FragmentEdge> fragment_edges;
 
@@ -36,7 +37,7 @@ struct NFAFragment {
      * 构造 NFA 片段。
      * @param num_nodes 片段中额外状态的个数，不包含初态和终态
      */
-    NFAFragment(int num_nodes = 0) : num_nodes(num_nodes) {}
+    NFAFragment(int num_nodes = 0) : num_nodes(num_nodes), group_index(0) {}
 
     void addNormalRule(NodeId from, NodeId to, char ch) {
         rule_edges.push_back({ from, to, { 0, NORMAL, std::string(1, ch) } });
