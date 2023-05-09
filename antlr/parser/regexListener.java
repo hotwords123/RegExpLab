@@ -147,6 +147,66 @@ public interface regexListener extends ParseTreeListener {
 	 */
 	void exitQuantifierType(regexParser.QuantifierTypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link regexParser#rangeQuantifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeQuantifier(regexParser.RangeQuantifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#rangeQuantifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeQuantifier(regexParser.RangeQuantifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link regexParser#rangeQuantifierLowerBound}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeQuantifierLowerBound(regexParser.RangeQuantifierLowerBoundContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#rangeQuantifierLowerBound}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeQuantifierLowerBound(regexParser.RangeQuantifierLowerBoundContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link regexParser#rangeQuantifierUpperBound}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeQuantifierUpperBound(regexParser.RangeQuantifierUpperBoundContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#rangeQuantifierUpperBound}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeQuantifierUpperBound(regexParser.RangeQuantifierUpperBoundContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link regexParser#integer}.
+	 * @param ctx the parse tree
+	 */
+	void enterInteger(regexParser.IntegerContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#integer}.
+	 * @param ctx the parse tree
+	 */
+	void exitInteger(regexParser.IntegerContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link regexParser#anchor}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnchor(regexParser.AnchorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#anchor}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnchor(regexParser.AnchorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link regexParser#anchorStartOfString}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnchorStartOfString(regexParser.AnchorStartOfStringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#anchorStartOfString}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnchorStartOfString(regexParser.AnchorStartOfStringContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link regexParser#char}.
 	 * @param ctx the parse tree
 	 */

@@ -58,6 +58,24 @@ public:
   virtual void enterQuantifierType(regexParser::QuantifierTypeContext * /*ctx*/) override { }
   virtual void exitQuantifierType(regexParser::QuantifierTypeContext * /*ctx*/) override { }
 
+  virtual void enterRangeQuantifier(regexParser::RangeQuantifierContext * /*ctx*/) override { }
+  virtual void exitRangeQuantifier(regexParser::RangeQuantifierContext * /*ctx*/) override { }
+
+  virtual void enterRangeQuantifierLowerBound(regexParser::RangeQuantifierLowerBoundContext * /*ctx*/) override { }
+  virtual void exitRangeQuantifierLowerBound(regexParser::RangeQuantifierLowerBoundContext * /*ctx*/) override { }
+
+  virtual void enterRangeQuantifierUpperBound(regexParser::RangeQuantifierUpperBoundContext * /*ctx*/) override { }
+  virtual void exitRangeQuantifierUpperBound(regexParser::RangeQuantifierUpperBoundContext * /*ctx*/) override { }
+
+  virtual void enterInteger(regexParser::IntegerContext * /*ctx*/) override { }
+  virtual void exitInteger(regexParser::IntegerContext * /*ctx*/) override { }
+
+  virtual void enterAnchor(regexParser::AnchorContext * /*ctx*/) override { }
+  virtual void exitAnchor(regexParser::AnchorContext * /*ctx*/) override { }
+
+  virtual void enterAnchorStartOfString(regexParser::AnchorStartOfStringContext * /*ctx*/) override { }
+  virtual void exitAnchorStartOfString(regexParser::AnchorStartOfStringContext * /*ctx*/) override { }
+
   virtual void enterChar(regexParser::CharContext * /*ctx*/) override { }
   virtual void exitChar(regexParser::CharContext * /*ctx*/) override { }
 

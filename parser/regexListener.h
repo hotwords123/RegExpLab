@@ -56,6 +56,24 @@ public:
   virtual void enterQuantifierType(regexParser::QuantifierTypeContext *ctx) = 0;
   virtual void exitQuantifierType(regexParser::QuantifierTypeContext *ctx) = 0;
 
+  virtual void enterRangeQuantifier(regexParser::RangeQuantifierContext *ctx) = 0;
+  virtual void exitRangeQuantifier(regexParser::RangeQuantifierContext *ctx) = 0;
+
+  virtual void enterRangeQuantifierLowerBound(regexParser::RangeQuantifierLowerBoundContext *ctx) = 0;
+  virtual void exitRangeQuantifierLowerBound(regexParser::RangeQuantifierLowerBoundContext *ctx) = 0;
+
+  virtual void enterRangeQuantifierUpperBound(regexParser::RangeQuantifierUpperBoundContext *ctx) = 0;
+  virtual void exitRangeQuantifierUpperBound(regexParser::RangeQuantifierUpperBoundContext *ctx) = 0;
+
+  virtual void enterInteger(regexParser::IntegerContext *ctx) = 0;
+  virtual void exitInteger(regexParser::IntegerContext *ctx) = 0;
+
+  virtual void enterAnchor(regexParser::AnchorContext *ctx) = 0;
+  virtual void exitAnchor(regexParser::AnchorContext *ctx) = 0;
+
+  virtual void enterAnchorStartOfString(regexParser::AnchorStartOfStringContext *ctx) = 0;
+  virtual void exitAnchorStartOfString(regexParser::AnchorStartOfStringContext *ctx) = 0;
+
   virtual void enterChar(regexParser::CharContext *ctx) = 0;
   virtual void exitChar(regexParser::CharContext *ctx) = 0;
 

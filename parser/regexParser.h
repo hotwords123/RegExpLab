@@ -17,8 +17,9 @@ public:
     CharacterClassAnyWord = 12, CharacterClassAnyWordInverted = 13, CharacterClassAnyDecimalDigit = 14, 
     CharacterClassAnyDecimalDigitInverted = 15, CharacterClassAnyBlank = 16, 
     CharacterClassAnyBlankInverted = 17, ZeroOrMoreQuantifier = 18, OneOrMoreQuantifier = 19, 
-    ZeroOrOneQuantifier = 20, AnchorWordBoundary = 21, AnchorNonWordBoundary = 22, 
-    AnchorEndOfString = 23, EscapedChar = 24, Digit = 25, Char = 26
+    ZeroOrOneQuantifier = 20, RangeQuantifierSeparator = 21, AnchorWordBoundary = 22, 
+    AnchorNonWordBoundary = 23, AnchorEndOfString = 24, EscapedChar = 25, 
+    Digit = 26, Char = 27
   };
 
   enum {
@@ -26,7 +27,9 @@ public:
     RuleGroup = 4, RuleSingle = 5, RuleCharacterGroup = 6, RuleCharacterGroupNegativeModifier = 7, 
     RuleCharacterGroupItem = 8, RuleCharacterRange = 9, RuleCharacterClass = 10, 
     RuleQuantifier = 11, RuleLazyModifier = 12, RuleQuantifierType = 13, 
-    RuleChar = 14, RuleCharInGroup = 15
+    RuleRangeQuantifier = 14, RuleRangeQuantifierLowerBound = 15, RuleRangeQuantifierUpperBound = 16, 
+    RuleInteger = 17, RuleAnchor = 18, RuleAnchorStartOfString = 19, RuleChar = 20, 
+    RuleCharInGroup = 21
   };
 
   explicit regexParser(antlr4::TokenStream *input);
@@ -60,6 +63,12 @@ public:
   class QuantifierContext;
   class LazyModifierContext;
   class QuantifierTypeContext;
+  class RangeQuantifierContext;
+  class RangeQuantifierLowerBoundContext;
+  class RangeQuantifierUpperBoundContext;
+  class IntegerContext;
+  class AnchorContext;
+  class AnchorStartOfStringContext;
   class CharContext;
   class CharInGroupContext; 
 
@@ -97,6 +106,7 @@ public:
     virtual size_t getRuleIndex() const override;
     NormalItemContext *normalItem();
     QuantifierContext *quantifier();
+    AnchorContext *anchor();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -124,6 +134,7 @@ public:
     GroupContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     RegexContext *regex();
+    antlr4::tree::TerminalNode *GroupNonCapturingModifier();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -258,6 +269,7 @@ public:
     antlr4::tree::TerminalNode *ZeroOrMoreQuantifier();
     antlr4::tree::TerminalNode *OneOrMoreQuantifier();
     antlr4::tree::TerminalNode *ZeroOrOneQuantifier();
+    RangeQuantifierContext *rangeQuantifier();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -265,6 +277,90 @@ public:
   };
 
   QuantifierTypeContext* quantifierType();
+
+  class  RangeQuantifierContext : public antlr4::ParserRuleContext {
+  public:
+    RangeQuantifierContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    RangeQuantifierLowerBoundContext *rangeQuantifierLowerBound();
+    antlr4::tree::TerminalNode *RangeQuantifierSeparator();
+    RangeQuantifierUpperBoundContext *rangeQuantifierUpperBound();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  RangeQuantifierContext* rangeQuantifier();
+
+  class  RangeQuantifierLowerBoundContext : public antlr4::ParserRuleContext {
+  public:
+    RangeQuantifierLowerBoundContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    IntegerContext *integer();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  RangeQuantifierLowerBoundContext* rangeQuantifierLowerBound();
+
+  class  RangeQuantifierUpperBoundContext : public antlr4::ParserRuleContext {
+  public:
+    RangeQuantifierUpperBoundContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    IntegerContext *integer();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  RangeQuantifierUpperBoundContext* rangeQuantifierUpperBound();
+
+  class  IntegerContext : public antlr4::ParserRuleContext {
+  public:
+    IntegerContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> Digit();
+    antlr4::tree::TerminalNode* Digit(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  IntegerContext* integer();
+
+  class  AnchorContext : public antlr4::ParserRuleContext {
+  public:
+    AnchorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    AnchorStartOfStringContext *anchorStartOfString();
+    antlr4::tree::TerminalNode *AnchorEndOfString();
+    antlr4::tree::TerminalNode *AnchorWordBoundary();
+    antlr4::tree::TerminalNode *AnchorNonWordBoundary();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  AnchorContext* anchor();
+
+  class  AnchorStartOfStringContext : public antlr4::ParserRuleContext {
+  public:
+    AnchorStartOfStringContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *Hat();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  AnchorStartOfStringContext* anchorStartOfString();
 
   class  CharContext : public antlr4::ParserRuleContext {
   public:
@@ -274,6 +370,7 @@ public:
     antlr4::tree::TerminalNode *Digit();
     antlr4::tree::TerminalNode *Char();
     antlr4::tree::TerminalNode *Hyphen();
+    antlr4::tree::TerminalNode *RangeQuantifierSeparator();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

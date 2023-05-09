@@ -17,8 +17,9 @@ public:
     CharacterClassAnyWord = 12, CharacterClassAnyWordInverted = 13, CharacterClassAnyDecimalDigit = 14, 
     CharacterClassAnyDecimalDigitInverted = 15, CharacterClassAnyBlank = 16, 
     CharacterClassAnyBlankInverted = 17, ZeroOrMoreQuantifier = 18, OneOrMoreQuantifier = 19, 
-    ZeroOrOneQuantifier = 20, AnchorWordBoundary = 21, AnchorNonWordBoundary = 22, 
-    AnchorEndOfString = 23, EscapedChar = 24, Digit = 25, Char = 26
+    ZeroOrOneQuantifier = 20, RangeQuantifierSeparator = 21, AnchorWordBoundary = 22, 
+    AnchorNonWordBoundary = 23, AnchorEndOfString = 24, EscapedChar = 25, 
+    Digit = 26, Char = 27
   };
 
   explicit regexLexer(antlr4::CharStream *input);
