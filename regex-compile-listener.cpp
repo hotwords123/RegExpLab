@@ -54,6 +54,20 @@ void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext
         } else if (quantifierType->ZeroOrOneQuantifier()) {
             min_count = 0;
             max_count = 1;
+        } else if (auto rangeQuantifier = quantifierType->rangeQuantifier()) {
+            auto lowerBound = rangeQuantifier->rangeQuantifierLowerBound();
+            min_count = std::stoi(lowerBound->getText());
+
+            if (rangeQuantifier->RangeQuantifierSeparator()) {
+                if (auto upperBound = rangeQuantifier->rangeQuantifierUpperBound()) { // {n,m}
+                    max_count = std::stoi(upperBound->getText());
+                    // TODO: check `min_count <= max_count`?
+                } else { // {n,}
+                    max_count = -1;
+                }
+            } else { // {n}
+                max_count = min_count;
+            }
         }
 
         if (quantifier->lazyModifier()) greedy = false;
