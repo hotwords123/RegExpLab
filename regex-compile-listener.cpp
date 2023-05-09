@@ -1,4 +1,5 @@
 #include "regex-compile-listener.h"
+#include <iostream>
 
 RegexCompileListener::RegexCompileListener(Regex &regex)
     : regex(regex) {}
@@ -174,5 +175,62 @@ void RegexCompileListener::exitCharacterGroup(regexParser::CharacterGroupContext
                 fragment->addRangeRule(0, 1, start, i - 1);
             }
         }
+    }
+}
+
+void RegexCompileListener::buildFrom(regexParser::RegexContext *tree) {
+    // 遍历正则表达式的语法树
+    antlr4::tree::ParseTreeWalker::DEFAULT.walk(this, tree);
+
+    // 加入初态 0 和终态 1
+    regex.nfa.append_states(2);
+    regex.nfa.set_final(1, true);
+
+    // 把编译得到的片段组装成完整的 NFA
+    NFAFragment *fragment = getFragment(tree);
+    assemble(fragment, 0, 1);
+
+    // 允许从任意位置开始匹配
+    regex.nfa.add_rule(0, { 0, SPECIAL, "." });
+
+    std::cout << regex.nfa;
+}
+
+void RegexCompileListener::assemble(const NFAFragment *fragment, int initial, int final) const {
+    auto &nfa = regex.nfa;
+
+    // 在 NFA 中添加所需的额外状态
+    int state_offset = nfa.append_states(fragment->num_nodes);
+
+    // 计算 NFA 中状态的下标
+    auto stateIndex = [&](NFAFragment::NodeId id) {
+        if (id <= 0) return initial;
+        if (id > fragment->num_nodes) return final;
+        return state_offset + (id - 1);
+    };
+
+    // 将迁移边从片段复制到 NFA 中
+    auto copyRule = [&](const NFAFragment::RuleEdge &edge) {
+        int from = stateIndex(edge.from);
+        int to = stateIndex(edge.to);
+        Rule &rule = nfa.add_rule(from, edge.rule);
+        rule.dst = to;
+    };
+
+    // 处理不需要最后添加的迁移边
+    for (auto &edge : fragment->rule_edges) {
+        if (edge.rule.dst != 1) copyRule(edge);
+    }
+
+    // 在 NFA 中递归组装子片段
+    for (auto &edge : fragment->fragment_edges) {
+        int from = stateIndex(edge.from);
+        int to = stateIndex(edge.to);
+        assemble(edge.fragment, from, to);
+    }
+
+    // 处理需要最后添加的迁移边
+    for (auto &edge : fragment->rule_edges) {
+        if (edge.rule.dst == 1) copyRule(edge);
     }
 }

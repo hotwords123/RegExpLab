@@ -45,8 +45,6 @@ class NFA {
     std::vector<std::vector<Rule>> rules; // 表示所有状态转移规则的二维数组，长为num_states。rules[i]表示从状态i出发的所有转移规则。
 
     friend class NFAExecutor;
-    friend class NFAFragment;
-    friend class Regex;
 
 public:
     /**
@@ -54,7 +52,32 @@ public:
      * @param count 状态数量
      * @return 加入的首个状态的下标
      */
-    int append_states(int count);
+    int append_states(int count) {
+        int offset = num_states;
+        num_states += count;
+        is_final.resize(num_states);
+        rules.resize(num_states);
+        return offset;
+    }
+
+    /**
+     * 向自动机中加入新的迁移。
+     * @param from 迁移的出发状态
+     * @param rule 迁移边
+     * @return 加入的迁移边
+     */
+    Rule &add_rule(int from, const Rule &rule) {
+        return rules[from].emplace_back(rule);
+    }
+
+    /**
+     * 改变状态的终态属性。
+     * @param state 状态下标
+     * @param flag 是否设为终态
+     */
+    void set_final(int state, bool flag) {
+        is_final[state] = flag;
+    }
 
     /**
      * 在自动机上执行指定的输入字符串。
@@ -70,6 +93,9 @@ public:
      * 你不需要理解此函数的含义、阅读此函数的实现和调用此函数。
      */
     static NFA from_text(const std::string &text);
+
+    // 输出自动机
+    friend std::ostream &operator<<(std::ostream &os, const NFA &nfa);
 };
 
 #endif // CPP_NFA_H
