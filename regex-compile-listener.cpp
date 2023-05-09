@@ -93,6 +93,24 @@ void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext
     }
 }
 
+// 解析单个可能被转义的字符。
+static char parseChar(const std::string &text) {
+    // 未转义的字符
+    if (text.front() != '\\') return text.front();
+
+    // 处理转义字符
+    char value = text.back();
+    switch (value) {
+        case 'f': return '\f';
+        case 'n': return '\n';
+        case 'r': return '\r';
+        case 't': return '\t';
+        case 'v': return '\v';
+        case '0': return '\0';
+        default: return value;
+    }
+}
+
 // normalItem : single | group ;
 // single : char | characterClass | AnyCharacter | characterGroup ;
 // group : '(' regex ')' ;
@@ -100,10 +118,10 @@ void RegexCompileListener::exitNormalItem(regexParser::NormalItemContext *ctx) {
     auto fragment = createFragment(ctx);
     if (auto single = ctx->single()) {
         if (auto char_ = single->char_()) {
-            // 不论字符是否被转义，取最后一位即可
-            fragment->addNormalRule(0, 1, char_->getText().back());
+            // 解析普通字符并添加普通转移
+            fragment->addNormalRule(0, 1, parseChar(char_->getText()));
         } else if (auto characterClass = single->characterClass()) {
-            // 字符类别同样取最后一位用于区分
+            // 字符类别取最后一位用于区分
             fragment->addSpecialRule(0, 1, characterClass->getText().back());
         } else if (single->AnyCharacter()) {
             fragment->addSpecialRule(0, 1, '.');
@@ -124,13 +142,13 @@ void RegexCompileListener::exitCharacterGroup(regexParser::CharacterGroupContext
     auto groupItems = ctx->characterGroupItem();
     for (auto groupItem : groupItems) {
         if (auto charInGroup = groupItem->charInGroup()) {
-            fragment->addNormalRule(0, 1, charInGroup->getText().back());
+            fragment->addNormalRule(0, 1, parseChar(charInGroup->getText()));
         } else if (auto characterClass = groupItem->characterClass()) {
             fragment->addSpecialRule(0, 1, characterClass->getText().back());
         } else if (auto characterRange = groupItem->characterRange()) {
             auto chars = characterRange->charInGroup();
-            char lbound = chars[0]->getText().back();
-            char ubound = chars[1]->getText().back();
+            char lbound = parseChar(chars[0]->getText());
+            char ubound = parseChar(chars[1]->getText());
             fragment->addRangeRule(0, 1, lbound, ubound);
         }
     }
