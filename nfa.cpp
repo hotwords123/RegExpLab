@@ -3,14 +3,6 @@
 #include <sstream>
 #include "utils.h"
 
-int NFA::append_states(int count) {
-    int offset = num_states;
-    num_states += count;
-    is_final.resize(num_states);
-    rules.resize(num_states);
-    return offset;
-}
-
 Path NFA::exec(const std::string &text, bool accept_prefix) {
     return NFAExecutor(*this, text, accept_prefix).exec();
 }
@@ -100,4 +92,22 @@ NFA NFA::from_text(const std::string &text) {
     }
     if (!ss.eof()) throw std::runtime_error("无法parse输入文件！(stringstream在getline的过程中发生错误)");;
     return nfa;
+}
+
+std::ostream &operator<<(std::ostream &os, const NFA &nfa) {
+    os << "states: " << nfa.num_states << '\n';
+    os << "final:";
+    for (int i = 0; i < nfa.num_states; i++) {
+        if (nfa.is_final[i]) os << " " << i;
+    }
+    os << '\n';
+
+    for (int i = 0; i < nfa.num_states; i++) {
+        for (auto &rule : nfa.rules[i]) {
+            const char types[][9] = {"normal", "range", "special", "epsilon", "anchor"};
+            os << i << "->" << rule.dst << " " << types[rule.type] << " " << rule.by << " " << rule.to << '\n';
+        }
+    }
+
+    return os;
 }

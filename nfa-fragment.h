@@ -64,14 +64,6 @@ struct NFAFragment {
     void addFragment(NodeId from, NodeId to, const NFAFragment *fragment) {
         fragment_edges.push_back({ from, to, fragment });
     }
-
-    /**
-     * 将当前片段组装到 NFA 中。
-     * @param nfa 目标 NFA
-     * @param initial 初态对应的下标
-     * @param final 终态对应的下标
-     */
-    void assemble(NFA &nfa, int initial, int final) const;
 };
 
 #endif // CPP_NFA_FRAGMENT_H

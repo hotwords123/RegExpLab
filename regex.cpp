@@ -20,27 +20,7 @@ Regex Regex::compile(const std::string &pattern, const std::string & /*flags*/) 
 
     // 使用 listener 遍历语法树，对每棵子树编译得到 NFA 片段
     RegexCompileListener listener(regex);
-    antlr4::tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
-
-    // 加入初态 0 和终态 1
-    regex.nfa.append_states(2);
-    regex.nfa.is_final[1] = true;
-
-    // 把编译得到的片段组装成完整的 NFA
-    NFAFragment *fragment = listener.getFragment(tree);
-    fragment->assemble(regex.nfa, 0, 1);
-
-    // 允许从任意位置开始匹配
-    regex.nfa.rules[0].push_back({ 0, SPECIAL, "." });
-
-    // 输出构造的自动机
-    printf("states: %d\n", regex.nfa.num_states);
-    for (int i = 0; i < regex.nfa.num_states; i++) {
-        for (auto &rule : regex.nfa.rules[i]) {
-            const char types[][9] = {"normal", "range", "special", "epsilon", "anchor"};
-            printf("%d->%d %s %s %s\n", i, rule.dst, types[rule.type], rule.by.c_str(), rule.to.c_str());
-        }
-    }
+    listener.buildFrom(tree);
 
     return regex;
 }
