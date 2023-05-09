@@ -21,14 +21,10 @@ bool NFAExecutor::dfs(int state, int pos) {
 
     // 枚举 state 的所有转移规则
     for (auto &rule : nfa.rules[state]) {
-        if (rule.type == EPSILON) { // epsilon-转移
-            path.consumes.push_back({});
-            if (dfs(rule.dst, pos))
-                return true;
-            path.consumes.pop_back();
-        } else if (pos != (int)text.size() && rule.matches(text[pos])) { // 字符转移
-            path.consumes.push_back(std::string(1, text[pos]));
-            if (dfs(rule.dst, pos + 1))
+        int count = rule.match(text, pos);
+        if (count >= 0) { // 匹配成功
+            path.consumes.push_back(text.substr(pos, count));
+            if (dfs(rule.dst, pos + count))
                 return true;
             path.consumes.pop_back();
         }

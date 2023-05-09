@@ -57,6 +57,10 @@ struct NFAFragment {
         rule_edges.push_back({ from, to, { add_last ? 1 : 0, EPSILON } });
     }
 
+    void addAnchorRule(NodeId from, NodeId to, char type) {
+        rule_edges.push_back({ from, to, { 0, ANCHOR, std::string(1, type) } });
+    }
+
     void addFragment(NodeId from, NodeId to, const NFAFragment *fragment) {
         fragment_edges.push_back({ from, to, fragment });
     }

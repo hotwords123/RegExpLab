@@ -37,7 +37,7 @@ Regex Regex::compile(const std::string &pattern, const std::string & /*flags*/) 
     printf("states: %d\n", regex.nfa.num_states);
     for (int i = 0; i < regex.nfa.num_states; i++) {
         for (auto &rule : regex.nfa.rules[i]) {
-            const char types[][9] = {"normal", "range", "special", "epsilon"};
+            const char types[][9] = {"normal", "range", "special", "epsilon", "anchor"};
             printf("%d->%d %s %s %s\n", i, rule.dst, types[rule.type], rule.by.c_str(), rule.to.c_str());
         }
     }
