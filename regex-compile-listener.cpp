@@ -35,23 +35,25 @@ void RegexCompileListener::exitExpression(regexParser::ExpressionContext *ctx) {
     }
 }
 
-// expressionItem : normalItem quantifier? ;
-void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext *ctx) {
-    auto normalItem = ctx->normalItem();
-    auto itemFragment = getFragment(normalItem);
-
+/**
+ * 对 NFA 子片段应用量词并生成新的 NFA 片段。
+ * @param fragment 要写入的 NFA 片段
+ * @param itemFragment 要应用量词的 NFA 子片段
+ * @param quantifier 要应用的量词
+ */
+static void applyQuantifier(NFAFragment *fragment, NFAFragment *itemFragment, regexParser::QuantifierContext *quantifier) {
     int min_count = 1, max_count = 1;
     bool greedy = true;
 
-    if (auto quantifier = ctx->quantifier()) {
+    if (quantifier) {
         auto quantifierType = quantifier->quantifierType();
-        if (quantifierType->ZeroOrMoreQuantifier()) {
+        if (quantifierType->ZeroOrMoreQuantifier()) { // E*
             min_count = 0;
             max_count = -1;
-        } else if (quantifierType->OneOrMoreQuantifier()) {
+        } else if (quantifierType->OneOrMoreQuantifier()) { // E+
             min_count = 1;
             max_count = -1;
-        } else if (quantifierType->ZeroOrOneQuantifier()) {
+        } else if (quantifierType->ZeroOrOneQuantifier()) { // E?
             min_count = 0;
             max_count = 1;
         } else if (auto rangeQuantifier = quantifierType->rangeQuantifier()) {
@@ -59,13 +61,13 @@ void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext
             min_count = std::stoi(lowerBound->getText());
 
             if (rangeQuantifier->RangeQuantifierSeparator()) {
-                if (auto upperBound = rangeQuantifier->rangeQuantifierUpperBound()) { // {n,m}
+                if (auto upperBound = rangeQuantifier->rangeQuantifierUpperBound()) { // E{n,m}
                     max_count = std::stoi(upperBound->getText());
                     // TODO: check `min_count <= max_count`?
-                } else { // {n,}
+                } else { // E{n,}
                     max_count = -1;
                 }
-            } else { // {n}
+            } else { // E{n}
                 max_count = min_count;
             }
         }
@@ -73,7 +75,6 @@ void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext
         if (quantifier->lazyModifier()) greedy = false;
     }
 
-    auto fragment = createFragment(ctx);
     if (max_count == -1) {
         if (min_count == 0) { // E*
             fragment->num_nodes = 1;
@@ -104,6 +105,19 @@ void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext
         }
     } else { // E{0}
         fragment->addEpsilonRule(0, 1);
+    }
+}
+
+// expressionItem : normalItem quantifier? | anchor ;
+void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext *ctx) {
+    auto fragment = createFragment(ctx);
+
+    if (auto normalItem = ctx->normalItem()) {
+        auto itemFragment = getFragment(normalItem);
+        auto quantifier = ctx->quantifier();
+        applyQuantifier(fragment, itemFragment, quantifier);
+    } else if (auto anchor = ctx->anchor()) {
+        fragment->addAnchorRule(0, 1, anchor->getText().back());
     }
 }
 
