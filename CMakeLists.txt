@@ -14,8 +14,10 @@ if(MINGW)
     add_link_options(-static -static-libgcc -static-libstdc++)
 endif()
 
+# 针对MSVC的配置
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>") # 使项目静态链接CRT，否则会报错LNK2038：检测到“RuntimeLibrary”的不匹配项
 
 add_executable(nfa main-nfa.cpp
     nfa.cpp nfa.h rule.cpp rule.h nfa-executor.cpp nfa-executor.h utils.h

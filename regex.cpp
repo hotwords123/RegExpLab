@@ -93,6 +93,9 @@ regexParser::RegexContext *Regex::parse(const std::string &pattern) {
     if (!tree)
         throw std::runtime_error("parser解析失败(函数返回了nullptr)");
 
+    if (antlrTokenStream->LA(1) != antlr4::Token::EOF)
+        throw std::runtime_error("parser未到达EOF");
+
     auto errCount = antlrParser->getNumberOfSyntaxErrors();
     if (errCount > 0)
         throw std::runtime_error("parser解析失败，表达式中有" + std::to_string(errCount) + "个语法错误！");
