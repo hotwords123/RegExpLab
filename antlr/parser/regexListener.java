@@ -57,6 +57,16 @@ public interface regexListener extends ParseTreeListener {
 	 */
 	void exitGroup(regexParser.GroupContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link regexParser#groupNonCapturingModifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterGroupNonCapturingModifier(regexParser.GroupNonCapturingModifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#groupNonCapturingModifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitGroupNonCapturingModifier(regexParser.GroupNonCapturingModifierContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link regexParser#single}.
 	 * @param ctx the parse tree
 	 */
@@ -196,16 +206,6 @@ public interface regexListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAnchor(regexParser.AnchorContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link regexParser#anchorStartOfString}.
-	 * @param ctx the parse tree
-	 */
-	void enterAnchorStartOfString(regexParser.AnchorStartOfStringContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link regexParser#anchorStartOfString}.
-	 * @param ctx the parse tree
-	 */
-	void exitAnchorStartOfString(regexParser.AnchorStartOfStringContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link regexParser#char}.
 	 * @param ctx the parse tree

@@ -18,12 +18,12 @@ normalItem
 /* Group */
 group :
   '('
-  GroupNonCapturingModifier? // 非捕获分组，不占用括号分组捕获的序号 // 本次实验不要求
+  groupNonCapturingModifier? // 非捕获分组，不占用括号分组捕获的序号 // 本次实验不要求
   regex
   ')'
   ;
 
-GroupNonCapturingModifier : '?:';
+groupNonCapturingModifier : '?'':';
 
 /* Single */
 single
@@ -38,8 +38,7 @@ AnyCharacter : '.';
 /* Character Group & Class */
 characterGroup : '[' characterGroupNegativeModifier? characterGroupItem+ ']';
 
-characterGroupNegativeModifier : Hat; // 取反，不匹配后面所列的字符
-Hat: '^';
+characterGroupNegativeModifier : '^'; // 取反，不匹配后面所列的字符
 
 characterGroupItem
   : charInGroup // 单个字符（普通字符或转义字符），除了-（在group中，-表示字符区间的连字符）
@@ -47,8 +46,7 @@ characterGroupItem
   | characterRange // 字符区间，例如a-z
   ;
 
-characterRange : charInGroup Hyphen charInGroup;
-Hyphen: '-';
+characterRange : charInGroup '-' charInGroup;
 
 characterClass // 以下是本实验要求支持的所有表示一类字符的元字符
   : CharacterClassAnyWord
@@ -95,13 +93,13 @@ integer: Digit+ ;
 
 /* Anchors 本次实验不要求 */
 anchor // 以下是本实验要求支持的所有anchor字符
-  : anchorStartOfString
+  : AnchorStartOfString
   | AnchorEndOfString
   | AnchorWordBoundary
   | AnchorNonWordBoundary
   ;
 
-anchorStartOfString: Hat;
+AnchorStartOfString: '^';
 AnchorWordBoundary : '\\b';
 AnchorNonWordBoundary : '\\B';
 AnchorEndOfString : '$';
@@ -112,12 +110,12 @@ Digit : [0-9];
 Char: . ;
 
 char // 在普通位置（指不在中括号字符组[]当中）可以出现的一般字符
-  : EscapedChar | Digit | Char // 在任何位置都一定被解析成一般字符的类型
+  : EscapedChar | Digit | Char | ':' // 在任何位置都一定被解析成一般字符的类型
   | '-' // 当-不在[]中时，就算不转义，也可以作为一般的字符处理。
   | ',' // 当,不在{}中时同理
   ;
 
 charInGroup // 在中括号字符组[]当中可以出现的一般字符
-  : EscapedChar | Digit | Char // 在任何位置都一定被解析成一般字符的类型
-  | '|' | '(' | ')' | '[' | '{' | '}' | '.' | '^' | '$' | '*' | '+' | '?' // 这些字符如果出现在[]中，就算不转义，也可以作为一般的字符处理。
+  : EscapedChar | Digit | Char | ':' // 在任何位置都一定被解析成一般字符的类型
+  | '|' | '(' | ')' | '[' | '{' | '}' | '.' | '^' | '$' | '*' | '+' | '?' | ',' // 这些字符如果出现在[]中，就算不转义，也可以作为一般的字符处理。
   ;

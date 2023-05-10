@@ -103,8 +103,12 @@ regexParser::RegexContext *Regex::parse(const std::string &pattern) {
     if (!tree)
         throw std::runtime_error("parser解析失败(函数返回了nullptr)");
 
-    if (antlrTokenStream->LA(1) != antlr4::Token::EOF)
-        throw std::runtime_error("parser未到达EOF");
+    if (antlrTokenStream->LA(1) != antlr4::Token::EOF) {
+        auto start = antlrTokenStream->get(0);
+        auto stop = antlrTokenStream->get(antlrTokenStream->index() - 1);
+        auto parsedText = antlrTokenStream->getText(start, stop);
+        throw std::runtime_error("parser解析失败，解析过程未能到达字符串结尾，可能是由于表达式中间有无法解析的内容！已解析的部分：" + parsedText);
+    }
 
     auto errCount = antlrParser->getNumberOfSyntaxErrors();
     if (errCount > 0)

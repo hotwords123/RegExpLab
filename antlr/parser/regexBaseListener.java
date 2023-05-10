@@ -76,6 +76,18 @@ public class regexBaseListener implements regexListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGroupNonCapturingModifier(regexParser.GroupNonCapturingModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGroupNonCapturingModifier(regexParser.GroupNonCapturingModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSingle(regexParser.SingleContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -239,18 +251,6 @@ public class regexBaseListener implements regexListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAnchor(regexParser.AnchorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAnchorStartOfString(regexParser.AnchorStartOfStringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnchorStartOfString(regexParser.AnchorStartOfStringContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

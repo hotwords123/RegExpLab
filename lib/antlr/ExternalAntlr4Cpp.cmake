@@ -30,7 +30,7 @@ else()
   set(ANTLR4_OUTPUT_DIR ${ANTLR4_ROOT}/runtime/Cpp/dist)
 endif()
 
-if(MSVC)
+if(MSVC_VERSION)
   set(ANTLR4_STATIC_LIBRARIES
       ${ANTLR4_OUTPUT_DIR}/antlr4-runtime-static.lib)
   set(ANTLR4_SHARED_LIBRARIES
@@ -191,15 +191,23 @@ if(NOT ANTLR_BUILD_CPP_TESTS)
   # So, we need to copy them now.
   set(ANTLR4_RUNTIME_CMAKE_HOME ${ANTLR4_ROOT}/runtime/Cpp/runtime)
   get_filename_component(ANTLR4_STATIC_LIBRARIES_BASENAME ${ANTLR4_STATIC_LIBRARIES} NAME)
-  get_filename_component(ANTLR4_SHARED_LIBRARIES_BASENAME ${ANTLR4_SHARED_LIBRARIES} NAME)
   get_filename_component(ANTLR4_RUNTIME_LIBRARIES_BASENAME ${ANTLR4_RUNTIME_LIBRARIES} NAME)
 
-  add_custom_command(
-          TARGET antlr4_runtime-build_shared
-          POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E make_directory ${ANTLR4_OUTPUT_DIR}
-          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_SHARED_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR}
-          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_RUNTIME_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR})
+  if(ANTLR4_SHARED_LIBRARIES)
+    get_filename_component(ANTLR4_SHARED_LIBRARIES_BASENAME ${ANTLR4_SHARED_LIBRARIES} NAME)
+    add_custom_command(
+            TARGET antlr4_runtime-build_shared
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${ANTLR4_OUTPUT_DIR}
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_SHARED_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR}
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_RUNTIME_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR})
+  else()
+    add_custom_command(
+            TARGET antlr4_runtime-build_shared
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${ANTLR4_OUTPUT_DIR}
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ANTLR4_RUNTIME_CMAKE_HOME}/${ANTLR4_RUNTIME_LIBRARIES_BASENAME} ${ANTLR4_OUTPUT_DIR})
+  endif()
 
   add_custom_command(
           TARGET antlr4_runtime-build_static

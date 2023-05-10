@@ -29,6 +29,9 @@ public:
   virtual void enterGroup(regexParser::GroupContext *ctx) = 0;
   virtual void exitGroup(regexParser::GroupContext *ctx) = 0;
 
+  virtual void enterGroupNonCapturingModifier(regexParser::GroupNonCapturingModifierContext *ctx) = 0;
+  virtual void exitGroupNonCapturingModifier(regexParser::GroupNonCapturingModifierContext *ctx) = 0;
+
   virtual void enterSingle(regexParser::SingleContext *ctx) = 0;
   virtual void exitSingle(regexParser::SingleContext *ctx) = 0;
 
@@ -70,9 +73,6 @@ public:
 
   virtual void enterAnchor(regexParser::AnchorContext *ctx) = 0;
   virtual void exitAnchor(regexParser::AnchorContext *ctx) = 0;
-
-  virtual void enterAnchorStartOfString(regexParser::AnchorStartOfStringContext *ctx) = 0;
-  virtual void exitAnchorStartOfString(regexParser::AnchorStartOfStringContext *ctx) = 0;
 
   virtual void enterChar(regexParser::CharContext *ctx) = 0;
   virtual void exitChar(regexParser::CharContext *ctx) = 0;

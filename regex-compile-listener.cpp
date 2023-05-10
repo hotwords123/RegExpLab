@@ -147,7 +147,7 @@ void RegexCompileListener::enterNormalItem(regexParser::NormalItemContext *ctx) 
     auto fragment = createFragment(ctx);
 
     if (auto group = ctx->group()) { // 预处理捕获组
-        if (!group->GroupNonCapturingModifier()) {
+        if (!group->groupNonCapturingModifier()) {
             // 记录捕获组的编号
             fragment->group_index = ++regex.group_count;
         }
