@@ -15,11 +15,12 @@
  * @return Regex类的对象
  */
 Regex Regex::compile(const std::string &pattern, const std::string & /*flags*/) {
-    Regex regex;
-    regexParser::RegexContext *tree = regex.parse(pattern);
+    auto parser = std::make_unique<ParseUtil>(pattern);
+    regexParser::RegexContext *tree = parser->parse();
 
-    // 使用 listener 遍历语法树，对每棵子树编译得到 NFA 片段
+    Regex regex;
     RegexCompileListener listener(regex);
+    // 使用 listener 遍历语法树，对每棵子树编译得到 NFA 片段
     listener.buildFrom(tree);
 
     return regex;
@@ -51,41 +52,27 @@ std::vector<std::string> Regex::match(const std::string &text) {
     return { text.substr(offset, length) };
 }
 
-/**
- * 解析正则表达式的字符串，生成语法分析树。
- * 你应该在compile函数中调用一次本函数，以得到语法分析树。
- * 通常，你不需要改动此函数，也不需要理解此函数实现每一行的具体含义。
- * 但是，你应当对语法分析树的数据结构(RegexContext)有一定的理解，作业文档中有相关的教程可供参考。
- * @param pattern 要解析的正则表达式的字符串
- * @return RegexContext类的对象的指针。保证不为空指针。
- */
-regexParser::RegexContext *Regex::parse(const std::string &pattern) {
-    if (antlrInputStream)
-        throw std::runtime_error("此Regex对象已被调用过一次parse函数，不可以再次调用！");
+Regex::ParseUtil::ParseUtil(const std::string &pattern)
+    : antlrInputStream(pattern),
+      antlrLexer(&antlrInputStream),
+      antlrTokenStream(&antlrLexer),
+      antlrParser(&antlrTokenStream) {}
 
-    antlrInputStream = std::make_unique<antlr4::ANTLRInputStream>(pattern);
-    antlrLexer = std::make_unique<regexLexer>(antlrInputStream.get());
-
-    antlrTokenStream = std::make_unique<antlr4::CommonTokenStream>(antlrLexer.get());
-    antlrParser = std::make_unique<regexParser>(antlrTokenStream.get());
-
-    regexParser::RegexContext *tree = antlrParser->regex();
+regexParser::RegexContext *Regex::ParseUtil::parse() {
+    regexParser::RegexContext *tree = antlrParser.regex();
     if (!tree)
         throw std::runtime_error("parser解析失败(函数返回了nullptr)");
 
-    if (antlrTokenStream->LA(1) != antlr4::Token::EOF) {
-        auto start = antlrTokenStream->get(0);
-        auto stop = antlrTokenStream->get(antlrTokenStream->index() - 1);
-        auto parsedText = antlrTokenStream->getText(start, stop);
+    if (antlrTokenStream.LA(1) != antlr4::Token::EOF) {
+        auto start = antlrTokenStream.get(0);
+        auto stop = antlrTokenStream.get(antlrTokenStream.index() - 1);
+        auto parsedText = antlrTokenStream.getText(start, stop);
         throw std::runtime_error("parser解析失败，解析过程未能到达字符串结尾，可能是由于表达式中间有无法解析的内容！已解析的部分：" + parsedText);
     }
 
-    auto errCount = antlrParser->getNumberOfSyntaxErrors();
+    auto errCount = antlrParser.getNumberOfSyntaxErrors();
     if (errCount > 0)
         throw std::runtime_error("parser解析失败，表达式中有" + std::to_string(errCount) + "个语法错误！");
 
     return tree;
 }
-
-// 此析构函数是为了管理ANTLR语法分析树所使用的内存的。你不需要阅读和理解它。
-Regex::~Regex() {}

@@ -29,10 +29,17 @@
 class Regex {
     NFA nfa; // 正则表达式所使用的NFA
 
-    std::unique_ptr<antlr4::ANTLRInputStream> antlrInputStream;
-    std::unique_ptr<regexLexer> antlrLexer;
-    std::unique_ptr<antlr4::CommonTokenStream> antlrTokenStream;
-    std::unique_ptr<regexParser> antlrParser;
+    struct ParseUtil { // 用于解析正则表达式的辅助类
+        antlr4::ANTLRInputStream antlrInputStream;
+        regexLexer antlrLexer;
+        antlr4::CommonTokenStream antlrTokenStream;
+        regexParser antlrParser;
+
+        ParseUtil(const std::string &pattern);
+
+        // 解析正则表达式的字符串，生成语法分析树。
+        regexParser::RegexContext *parse();
+    };
 
     friend class RegexCompileListener;
 
@@ -61,20 +68,6 @@ public:
      * @return 如上所述
      */
     std::vector<std::string> match(const std::string &text);
-
-    // 析构函数，和以下那些private变量，是为了管理ANTLR语法分析树所使用的内存的。你不需要阅读和理解它们。
-    ~Regex();
-
-private:
-    /**
-     * 解析正则表达式的字符串，生成语法分析树。
-     * 你应该在compile函数中调用一次本函数，以得到语法分析树。
-     * 通常，你不需要改动此函数，也不需要理解此函数实现每一行的具体含义。
-     * 但是，你应当对语法分析树的数据结构(RegexContext)有一定的理解，作业文档中有相关的教程可供参考。
-     * @param pattern 要解析的正则表达式的字符串
-     * @return RegexContext类的对象的指针。保证不为空指针。
-     */
-    regexParser::RegexContext *parse(const std::string &pattern);
 };
 
 #endif // CPP_REGEX_H
