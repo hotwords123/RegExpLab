@@ -13,12 +13,12 @@ class  regexLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    GroupNonCapturingModifier = 8, AnyCharacter = 9, Hat = 10, Hyphen = 11, 
-    CharacterClassAnyWord = 12, CharacterClassAnyWordInverted = 13, CharacterClassAnyDecimalDigit = 14, 
-    CharacterClassAnyDecimalDigitInverted = 15, CharacterClassAnyBlank = 16, 
-    CharacterClassAnyBlankInverted = 17, ZeroOrMoreQuantifier = 18, OneOrMoreQuantifier = 19, 
-    ZeroOrOneQuantifier = 20, AnchorWordBoundary = 21, AnchorNonWordBoundary = 22, 
-    AnchorEndOfString = 23, EscapedChar = 24, Digit = 25, Char = 26
+    T__7 = 8, T__8 = 9, AnyCharacter = 10, CharacterClassAnyWord = 11, CharacterClassAnyWordInverted = 12, 
+    CharacterClassAnyDecimalDigit = 13, CharacterClassAnyDecimalDigitInverted = 14, 
+    CharacterClassAnyBlank = 15, CharacterClassAnyBlankInverted = 16, ZeroOrMoreQuantifier = 17, 
+    OneOrMoreQuantifier = 18, ZeroOrOneQuantifier = 19, AnchorStartOfString = 20, 
+    AnchorWordBoundary = 21, AnchorNonWordBoundary = 22, AnchorEndOfString = 23, 
+    EscapedChar = 24, Digit = 25, Char = 26
   };
 
   explicit regexLexer(antlr4::CharStream *input);

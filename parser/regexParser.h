@@ -13,20 +13,20 @@ class  regexParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    GroupNonCapturingModifier = 8, AnyCharacter = 9, Hat = 10, Hyphen = 11, 
-    CharacterClassAnyWord = 12, CharacterClassAnyWordInverted = 13, CharacterClassAnyDecimalDigit = 14, 
-    CharacterClassAnyDecimalDigitInverted = 15, CharacterClassAnyBlank = 16, 
-    CharacterClassAnyBlankInverted = 17, ZeroOrMoreQuantifier = 18, OneOrMoreQuantifier = 19, 
-    ZeroOrOneQuantifier = 20, AnchorWordBoundary = 21, AnchorNonWordBoundary = 22, 
-    AnchorEndOfString = 23, EscapedChar = 24, Digit = 25, Char = 26
+    T__7 = 8, T__8 = 9, AnyCharacter = 10, CharacterClassAnyWord = 11, CharacterClassAnyWordInverted = 12, 
+    CharacterClassAnyDecimalDigit = 13, CharacterClassAnyDecimalDigitInverted = 14, 
+    CharacterClassAnyBlank = 15, CharacterClassAnyBlankInverted = 16, ZeroOrMoreQuantifier = 17, 
+    OneOrMoreQuantifier = 18, ZeroOrOneQuantifier = 19, AnchorStartOfString = 20, 
+    AnchorWordBoundary = 21, AnchorNonWordBoundary = 22, AnchorEndOfString = 23, 
+    EscapedChar = 24, Digit = 25, Char = 26
   };
 
   enum {
     RuleRegex = 0, RuleExpression = 1, RuleExpressionItem = 2, RuleNormalItem = 3, 
-    RuleGroup = 4, RuleSingle = 5, RuleCharacterGroup = 6, RuleCharacterGroupNegativeModifier = 7, 
-    RuleCharacterGroupItem = 8, RuleCharacterRange = 9, RuleCharacterClass = 10, 
-    RuleQuantifier = 11, RuleLazyModifier = 12, RuleQuantifierType = 13, 
-    RuleChar = 14, RuleCharInGroup = 15
+    RuleGroup = 4, RuleGroupNonCapturingModifier = 5, RuleSingle = 6, RuleCharacterGroup = 7, 
+    RuleCharacterGroupNegativeModifier = 8, RuleCharacterGroupItem = 9, 
+    RuleCharacterRange = 10, RuleCharacterClass = 11, RuleQuantifier = 12, 
+    RuleLazyModifier = 13, RuleQuantifierType = 14, RuleChar = 15, RuleCharInGroup = 16
   };
 
   explicit regexParser(antlr4::TokenStream *input);
@@ -51,6 +51,7 @@ public:
   class ExpressionItemContext;
   class NormalItemContext;
   class GroupContext;
+  class GroupNonCapturingModifierContext;
   class SingleContext;
   class CharacterGroupContext;
   class CharacterGroupNegativeModifierContext;
@@ -132,6 +133,19 @@ public:
 
   GroupContext* group();
 
+  class  GroupNonCapturingModifierContext : public antlr4::ParserRuleContext {
+  public:
+    GroupNonCapturingModifierContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ZeroOrOneQuantifier();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  GroupNonCapturingModifierContext* groupNonCapturingModifier();
+
   class  SingleContext : public antlr4::ParserRuleContext {
   public:
     SingleContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -167,7 +181,7 @@ public:
   public:
     CharacterGroupNegativeModifierContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *Hat();
+    antlr4::tree::TerminalNode *AnchorStartOfString();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -197,7 +211,6 @@ public:
     virtual size_t getRuleIndex() const override;
     std::vector<CharInGroupContext *> charInGroup();
     CharInGroupContext* charInGroup(size_t i);
-    antlr4::tree::TerminalNode *Hyphen();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -273,7 +286,6 @@ public:
     antlr4::tree::TerminalNode *EscapedChar();
     antlr4::tree::TerminalNode *Digit();
     antlr4::tree::TerminalNode *Char();
-    antlr4::tree::TerminalNode *Hyphen();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -290,7 +302,7 @@ public:
     antlr4::tree::TerminalNode *Digit();
     antlr4::tree::TerminalNode *Char();
     antlr4::tree::TerminalNode *AnyCharacter();
-    antlr4::tree::TerminalNode *Hat();
+    antlr4::tree::TerminalNode *AnchorStartOfString();
     antlr4::tree::TerminalNode *AnchorEndOfString();
     antlr4::tree::TerminalNode *ZeroOrMoreQuantifier();
     antlr4::tree::TerminalNode *OneOrMoreQuantifier();

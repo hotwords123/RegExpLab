@@ -16,23 +16,23 @@ public class regexParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, GroupNonCapturingModifier=8, 
-		AnyCharacter=9, Hat=10, Hyphen=11, CharacterClassAnyWord=12, CharacterClassAnyWordInverted=13, 
-		CharacterClassAnyDecimalDigit=14, CharacterClassAnyDecimalDigitInverted=15, 
-		CharacterClassAnyBlank=16, CharacterClassAnyBlankInverted=17, ZeroOrMoreQuantifier=18, 
-		OneOrMoreQuantifier=19, ZeroOrOneQuantifier=20, AnchorWordBoundary=21, 
-		AnchorNonWordBoundary=22, AnchorEndOfString=23, EscapedChar=24, Digit=25, 
-		Char=26;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		AnyCharacter=10, CharacterClassAnyWord=11, CharacterClassAnyWordInverted=12, 
+		CharacterClassAnyDecimalDigit=13, CharacterClassAnyDecimalDigitInverted=14, 
+		CharacterClassAnyBlank=15, CharacterClassAnyBlankInverted=16, ZeroOrMoreQuantifier=17, 
+		OneOrMoreQuantifier=18, ZeroOrOneQuantifier=19, AnchorStartOfString=20, 
+		AnchorWordBoundary=21, AnchorNonWordBoundary=22, AnchorEndOfString=23, 
+		EscapedChar=24, Digit=25, Char=26;
 	public static final int
 		RULE_regex = 0, RULE_expression = 1, RULE_expressionItem = 2, RULE_normalItem = 3, 
-		RULE_group = 4, RULE_single = 5, RULE_characterGroup = 6, RULE_characterGroupNegativeModifier = 7, 
-		RULE_characterGroupItem = 8, RULE_characterRange = 9, RULE_characterClass = 10, 
-		RULE_quantifier = 11, RULE_lazyModifier = 12, RULE_quantifierType = 13, 
-		RULE_char = 14, RULE_charInGroup = 15;
+		RULE_group = 4, RULE_groupNonCapturingModifier = 5, RULE_single = 6, RULE_characterGroup = 7, 
+		RULE_characterGroupNegativeModifier = 8, RULE_characterGroupItem = 9, 
+		RULE_characterRange = 10, RULE_characterClass = 11, RULE_quantifier = 12, 
+		RULE_lazyModifier = 13, RULE_quantifierType = 14, RULE_char = 15, RULE_charInGroup = 16;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"regex", "expression", "expressionItem", "normalItem", "group", "single", 
-			"characterGroup", "characterGroupNegativeModifier", "characterGroupItem", 
+			"regex", "expression", "expressionItem", "normalItem", "group", "groupNonCapturingModifier", 
+			"single", "characterGroup", "characterGroupNegativeModifier", "characterGroupItem", 
 			"characterRange", "characterClass", "quantifier", "lazyModifier", "quantifierType", 
 			"char", "charInGroup"
 		};
@@ -41,19 +41,19 @@ public class regexParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'|'", "'('", "')'", "'['", "']'", "'{'", "'}'", "'?:'", "'.'", 
-			"'^'", "'-'", "'\\w'", "'\\W'", "'\\d'", "'\\D'", "'\\s'", "'\\S'", "'*'", 
-			"'+'", "'?'", "'\\b'", "'\\B'", "'$'"
+			null, "'|'", "'('", "')'", "':'", "'['", "']'", "'-'", "'{'", "'}'", 
+			"'.'", "'\\w'", "'\\W'", "'\\d'", "'\\D'", "'\\s'", "'\\S'", "'*'", "'+'", 
+			"'?'", "'^'", "'\\b'", "'\\B'", "'$'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, "GroupNonCapturingModifier", 
-			"AnyCharacter", "Hat", "Hyphen", "CharacterClassAnyWord", "CharacterClassAnyWordInverted", 
-			"CharacterClassAnyDecimalDigit", "CharacterClassAnyDecimalDigitInverted", 
-			"CharacterClassAnyBlank", "CharacterClassAnyBlankInverted", "ZeroOrMoreQuantifier", 
-			"OneOrMoreQuantifier", "ZeroOrOneQuantifier", "AnchorWordBoundary", "AnchorNonWordBoundary", 
+			null, null, null, null, null, null, null, null, null, null, "AnyCharacter", 
+			"CharacterClassAnyWord", "CharacterClassAnyWordInverted", "CharacterClassAnyDecimalDigit", 
+			"CharacterClassAnyDecimalDigitInverted", "CharacterClassAnyBlank", "CharacterClassAnyBlankInverted", 
+			"ZeroOrMoreQuantifier", "OneOrMoreQuantifier", "ZeroOrOneQuantifier", 
+			"AnchorStartOfString", "AnchorWordBoundary", "AnchorNonWordBoundary", 
 			"AnchorEndOfString", "EscapedChar", "Digit", "Char"
 		};
 	}
@@ -137,21 +137,21 @@ public class regexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32);
+			setState(34);
 			expression();
-			setState(37);
+			setState(39);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__0) {
 				{
 				{
-				setState(33);
+				setState(35);
 				match(T__0);
-				setState(34);
+				setState(36);
 				expression();
 				}
 				}
-				setState(39);
+				setState(41);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -197,20 +197,20 @@ public class regexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(41); 
+			setState(43); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(40);
+				setState(42);
 				expressionItem();
 				}
 				}
-				setState(43); 
+				setState(45); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 117701140L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 117570740L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -253,14 +253,14 @@ public class regexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(45);
-			normalItem();
 			setState(47);
+			normalItem();
+			setState(49);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 917504L) != 0)) {
 				{
-				setState(46);
+				setState(48);
 				quantifier();
 				}
 			}
@@ -304,12 +304,13 @@ public class regexParser extends Parser {
 		NormalItemContext _localctx = new NormalItemContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_normalItem);
 		try {
-			setState(51);
+			setState(53);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__3:
+			case T__4:
+			case T__6:
 			case AnyCharacter:
-			case Hyphen:
 			case CharacterClassAnyWord:
 			case CharacterClassAnyWordInverted:
 			case CharacterClassAnyDecimalDigit:
@@ -321,14 +322,14 @@ public class regexParser extends Parser {
 			case Char:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(49);
+				setState(51);
 				single();
 				}
 				break;
 			case T__1:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(50);
+				setState(52);
 				group();
 				}
 				break;
@@ -372,12 +373,52 @@ public class regexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53);
-			match(T__1);
-			setState(54);
-			regex();
 			setState(55);
+			match(T__1);
+			setState(56);
+			regex();
+			setState(57);
 			match(T__2);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class GroupNonCapturingModifierContext extends ParserRuleContext {
+		public TerminalNode ZeroOrOneQuantifier() { return getToken(regexParser.ZeroOrOneQuantifier, 0); }
+		public GroupNonCapturingModifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_groupNonCapturingModifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof regexListener ) ((regexListener)listener).enterGroupNonCapturingModifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof regexListener ) ((regexListener)listener).exitGroupNonCapturingModifier(this);
+		}
+	}
+
+	public final GroupNonCapturingModifierContext groupNonCapturingModifier() throws RecognitionException {
+		GroupNonCapturingModifierContext _localctx = new GroupNonCapturingModifierContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_groupNonCapturingModifier);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(59);
+			match(ZeroOrOneQuantifier);
+			setState(60);
+			match(T__3);
 			}
 		}
 		catch (RecognitionException re) {
@@ -419,18 +460,19 @@ public class regexParser extends Parser {
 
 	public final SingleContext single() throws RecognitionException {
 		SingleContext _localctx = new SingleContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_single);
+		enterRule(_localctx, 12, RULE_single);
 		try {
-			setState(61);
+			setState(66);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case Hyphen:
+			case T__3:
+			case T__6:
 			case EscapedChar:
 			case Digit:
 			case Char:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(57);
+				setState(62);
 				char_();
 				}
 				break;
@@ -442,21 +484,21 @@ public class regexParser extends Parser {
 			case CharacterClassAnyBlankInverted:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(58);
+				setState(63);
 				characterClass();
 				}
 				break;
 			case AnyCharacter:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(59);
+				setState(64);
 				match(AnyCharacter);
 				}
 				break;
-			case T__3:
+			case T__4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(60);
+				setState(65);
 				characterGroup();
 				}
 				break;
@@ -502,39 +544,39 @@ public class regexParser extends Parser {
 
 	public final CharacterGroupContext characterGroup() throws RecognitionException {
 		CharacterGroupContext _localctx = new CharacterGroupContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_characterGroup);
+		enterRule(_localctx, 14, RULE_characterGroup);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
-			match(T__3);
-			setState(65);
+			setState(68);
+			match(T__4);
+			setState(70);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
 				{
-				setState(64);
+				setState(69);
 				characterGroupNegativeModifier();
 				}
 				break;
 			}
-			setState(68); 
+			setState(73); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(67);
+				setState(72);
 				characterGroupItem();
 				}
 				}
-				setState(70); 
+				setState(75); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 127923934L) != 0) );
-			setState(72);
-			match(T__4);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 127926078L) != 0) );
+			setState(77);
+			match(T__5);
 			}
 		}
 		catch (RecognitionException re) {
@@ -550,7 +592,7 @@ public class regexParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CharacterGroupNegativeModifierContext extends ParserRuleContext {
-		public TerminalNode Hat() { return getToken(regexParser.Hat, 0); }
+		public TerminalNode AnchorStartOfString() { return getToken(regexParser.AnchorStartOfString, 0); }
 		public CharacterGroupNegativeModifierContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -567,12 +609,12 @@ public class regexParser extends Parser {
 
 	public final CharacterGroupNegativeModifierContext characterGroupNegativeModifier() throws RecognitionException {
 		CharacterGroupNegativeModifierContext _localctx = new CharacterGroupNegativeModifierContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_characterGroupNegativeModifier);
+		enterRule(_localctx, 16, RULE_characterGroupNegativeModifier);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(74);
-			match(Hat);
+			setState(79);
+			match(AnchorStartOfString);
 			}
 		}
 		catch (RecognitionException re) {
@@ -613,29 +655,29 @@ public class regexParser extends Parser {
 
 	public final CharacterGroupItemContext characterGroupItem() throws RecognitionException {
 		CharacterGroupItemContext _localctx = new CharacterGroupItemContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_characterGroupItem);
+		enterRule(_localctx, 18, RULE_characterGroupItem);
 		try {
-			setState(79);
+			setState(84);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(76);
+				setState(81);
 				charInGroup();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(77);
+				setState(82);
 				characterClass();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(78);
+				setState(83);
 				characterRange();
 				}
 				break;
@@ -660,7 +702,6 @@ public class regexParser extends Parser {
 		public CharInGroupContext charInGroup(int i) {
 			return getRuleContext(CharInGroupContext.class,i);
 		}
-		public TerminalNode Hyphen() { return getToken(regexParser.Hyphen, 0); }
 		public CharacterRangeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -677,15 +718,15 @@ public class regexParser extends Parser {
 
 	public final CharacterRangeContext characterRange() throws RecognitionException {
 		CharacterRangeContext _localctx = new CharacterRangeContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_characterRange);
+		enterRule(_localctx, 20, RULE_characterRange);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(81);
+			setState(86);
 			charInGroup();
-			setState(82);
-			match(Hyphen);
-			setState(83);
+			setState(87);
+			match(T__6);
+			setState(88);
 			charInGroup();
 			}
 		}
@@ -724,14 +765,14 @@ public class regexParser extends Parser {
 
 	public final CharacterClassContext characterClass() throws RecognitionException {
 		CharacterClassContext _localctx = new CharacterClassContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_characterClass);
+		enterRule(_localctx, 22, RULE_characterClass);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
+			setState(90);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 258048L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 129024L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -776,19 +817,19 @@ public class regexParser extends Parser {
 
 	public final QuantifierContext quantifier() throws RecognitionException {
 		QuantifierContext _localctx = new QuantifierContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_quantifier);
+		enterRule(_localctx, 24, RULE_quantifier);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87);
+			setState(92);
 			quantifierType();
-			setState(89);
+			setState(94);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ZeroOrOneQuantifier) {
 				{
-				setState(88);
+				setState(93);
 				lazyModifier();
 				}
 			}
@@ -825,11 +866,11 @@ public class regexParser extends Parser {
 
 	public final LazyModifierContext lazyModifier() throws RecognitionException {
 		LazyModifierContext _localctx = new LazyModifierContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_lazyModifier);
+		enterRule(_localctx, 26, RULE_lazyModifier);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(91);
+			setState(96);
 			match(ZeroOrOneQuantifier);
 			}
 		}
@@ -865,14 +906,14 @@ public class regexParser extends Parser {
 
 	public final QuantifierTypeContext quantifierType() throws RecognitionException {
 		QuantifierTypeContext _localctx = new QuantifierTypeContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_quantifierType);
+		enterRule(_localctx, 28, RULE_quantifierType);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(93);
+			setState(98);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 917504L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -898,7 +939,6 @@ public class regexParser extends Parser {
 		public TerminalNode EscapedChar() { return getToken(regexParser.EscapedChar, 0); }
 		public TerminalNode Digit() { return getToken(regexParser.Digit, 0); }
 		public TerminalNode Char() { return getToken(regexParser.Char, 0); }
-		public TerminalNode Hyphen() { return getToken(regexParser.Hyphen, 0); }
 		public CharContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -915,14 +955,14 @@ public class regexParser extends Parser {
 
 	public final CharContext char_() throws RecognitionException {
 		CharContext _localctx = new CharContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_char);
+		enterRule(_localctx, 30, RULE_char);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
+			setState(100);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 117442560L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 117440656L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -949,7 +989,7 @@ public class regexParser extends Parser {
 		public TerminalNode Digit() { return getToken(regexParser.Digit, 0); }
 		public TerminalNode Char() { return getToken(regexParser.Char, 0); }
 		public TerminalNode AnyCharacter() { return getToken(regexParser.AnyCharacter, 0); }
-		public TerminalNode Hat() { return getToken(regexParser.Hat, 0); }
+		public TerminalNode AnchorStartOfString() { return getToken(regexParser.AnchorStartOfString, 0); }
 		public TerminalNode AnchorEndOfString() { return getToken(regexParser.AnchorEndOfString, 0); }
 		public TerminalNode ZeroOrMoreQuantifier() { return getToken(regexParser.ZeroOrMoreQuantifier, 0); }
 		public TerminalNode OneOrMoreQuantifier() { return getToken(regexParser.OneOrMoreQuantifier, 0); }
@@ -970,14 +1010,14 @@ public class regexParser extends Parser {
 
 	public final CharInGroupContext charInGroup() throws RecognitionException {
 		CharInGroupContext _localctx = new CharInGroupContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_charInGroup);
+		enterRule(_localctx, 32, RULE_charInGroup);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(97);
+			setState(102);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 127665886L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 127797054L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -999,61 +1039,63 @@ public class regexParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u001ad\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u001ai\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
 		"\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e\u0002\u000f\u0007\u000f"+
-		"\u0001\u0000\u0001\u0000\u0001\u0000\u0005\u0000$\b\u0000\n\u0000\f\u0000"+
-		"\'\t\u0000\u0001\u0001\u0004\u0001*\b\u0001\u000b\u0001\f\u0001+\u0001"+
-		"\u0002\u0001\u0002\u0003\u00020\b\u0002\u0001\u0003\u0001\u0003\u0003"+
-		"\u00034\b\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001"+
-		"\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0003\u0005>\b\u0005\u0001"+
-		"\u0006\u0001\u0006\u0003\u0006B\b\u0006\u0001\u0006\u0004\u0006E\b\u0006"+
-		"\u000b\u0006\f\u0006F\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007"+
-		"\u0001\b\u0001\b\u0001\b\u0003\bP\b\b\u0001\t\u0001\t\u0001\t\u0001\t"+
-		"\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0003\u000bZ\b\u000b\u0001\f"+
-		"\u0001\f\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001\u000f\u0001\u000f"+
-		"\u0001\u000f\u0000\u0000\u0010\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010"+
-		"\u0012\u0014\u0016\u0018\u001a\u001c\u001e\u0000\u0004\u0001\u0000\f\u0011"+
-		"\u0001\u0000\u0012\u0014\u0002\u0000\u000b\u000b\u0018\u001a\u0005\u0000"+
-		"\u0001\u0004\u0006\u0007\t\n\u0012\u0014\u0017\u001a_\u0000 \u0001\u0000"+
-		"\u0000\u0000\u0002)\u0001\u0000\u0000\u0000\u0004-\u0001\u0000\u0000\u0000"+
-		"\u00063\u0001\u0000\u0000\u0000\b5\u0001\u0000\u0000\u0000\n=\u0001\u0000"+
-		"\u0000\u0000\f?\u0001\u0000\u0000\u0000\u000eJ\u0001\u0000\u0000\u0000"+
-		"\u0010O\u0001\u0000\u0000\u0000\u0012Q\u0001\u0000\u0000\u0000\u0014U"+
-		"\u0001\u0000\u0000\u0000\u0016W\u0001\u0000\u0000\u0000\u0018[\u0001\u0000"+
-		"\u0000\u0000\u001a]\u0001\u0000\u0000\u0000\u001c_\u0001\u0000\u0000\u0000"+
-		"\u001ea\u0001\u0000\u0000\u0000 %\u0003\u0002\u0001\u0000!\"\u0005\u0001"+
-		"\u0000\u0000\"$\u0003\u0002\u0001\u0000#!\u0001\u0000\u0000\u0000$\'\u0001"+
-		"\u0000\u0000\u0000%#\u0001\u0000\u0000\u0000%&\u0001\u0000\u0000\u0000"+
-		"&\u0001\u0001\u0000\u0000\u0000\'%\u0001\u0000\u0000\u0000(*\u0003\u0004"+
-		"\u0002\u0000)(\u0001\u0000\u0000\u0000*+\u0001\u0000\u0000\u0000+)\u0001"+
-		"\u0000\u0000\u0000+,\u0001\u0000\u0000\u0000,\u0003\u0001\u0000\u0000"+
-		"\u0000-/\u0003\u0006\u0003\u0000.0\u0003\u0016\u000b\u0000/.\u0001\u0000"+
-		"\u0000\u0000/0\u0001\u0000\u0000\u00000\u0005\u0001\u0000\u0000\u0000"+
-		"14\u0003\n\u0005\u000024\u0003\b\u0004\u000031\u0001\u0000\u0000\u0000"+
-		"32\u0001\u0000\u0000\u00004\u0007\u0001\u0000\u0000\u000056\u0005\u0002"+
-		"\u0000\u000067\u0003\u0000\u0000\u000078\u0005\u0003\u0000\u00008\t\u0001"+
-		"\u0000\u0000\u00009>\u0003\u001c\u000e\u0000:>\u0003\u0014\n\u0000;>\u0005"+
-		"\t\u0000\u0000<>\u0003\f\u0006\u0000=9\u0001\u0000\u0000\u0000=:\u0001"+
-		"\u0000\u0000\u0000=;\u0001\u0000\u0000\u0000=<\u0001\u0000\u0000\u0000"+
-		">\u000b\u0001\u0000\u0000\u0000?A\u0005\u0004\u0000\u0000@B\u0003\u000e"+
-		"\u0007\u0000A@\u0001\u0000\u0000\u0000AB\u0001\u0000\u0000\u0000BD\u0001"+
-		"\u0000\u0000\u0000CE\u0003\u0010\b\u0000DC\u0001\u0000\u0000\u0000EF\u0001"+
-		"\u0000\u0000\u0000FD\u0001\u0000\u0000\u0000FG\u0001\u0000\u0000\u0000"+
-		"GH\u0001\u0000\u0000\u0000HI\u0005\u0005\u0000\u0000I\r\u0001\u0000\u0000"+
-		"\u0000JK\u0005\n\u0000\u0000K\u000f\u0001\u0000\u0000\u0000LP\u0003\u001e"+
-		"\u000f\u0000MP\u0003\u0014\n\u0000NP\u0003\u0012\t\u0000OL\u0001\u0000"+
-		"\u0000\u0000OM\u0001\u0000\u0000\u0000ON\u0001\u0000\u0000\u0000P\u0011"+
-		"\u0001\u0000\u0000\u0000QR\u0003\u001e\u000f\u0000RS\u0005\u000b\u0000"+
-		"\u0000ST\u0003\u001e\u000f\u0000T\u0013\u0001\u0000\u0000\u0000UV\u0007"+
-		"\u0000\u0000\u0000V\u0015\u0001\u0000\u0000\u0000WY\u0003\u001a\r\u0000"+
-		"XZ\u0003\u0018\f\u0000YX\u0001\u0000\u0000\u0000YZ\u0001\u0000\u0000\u0000"+
-		"Z\u0017\u0001\u0000\u0000\u0000[\\\u0005\u0014\u0000\u0000\\\u0019\u0001"+
-		"\u0000\u0000\u0000]^\u0007\u0001\u0000\u0000^\u001b\u0001\u0000\u0000"+
-		"\u0000_`\u0007\u0002\u0000\u0000`\u001d\u0001\u0000\u0000\u0000ab\u0007"+
-		"\u0003\u0000\u0000b\u001f\u0001\u0000\u0000\u0000\t%+/3=AFOY";
+		"\u0002\u0010\u0007\u0010\u0001\u0000\u0001\u0000\u0001\u0000\u0005\u0000"+
+		"&\b\u0000\n\u0000\f\u0000)\t\u0000\u0001\u0001\u0004\u0001,\b\u0001\u000b"+
+		"\u0001\f\u0001-\u0001\u0002\u0001\u0002\u0003\u00022\b\u0002\u0001\u0003"+
+		"\u0001\u0003\u0003\u00036\b\u0003\u0001\u0004\u0001\u0004\u0001\u0004"+
+		"\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006"+
+		"\u0001\u0006\u0001\u0006\u0003\u0006C\b\u0006\u0001\u0007\u0001\u0007"+
+		"\u0003\u0007G\b\u0007\u0001\u0007\u0004\u0007J\b\u0007\u000b\u0007\f\u0007"+
+		"K\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0003"+
+		"\tU\b\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001"+
+		"\f\u0001\f\u0003\f_\b\f\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001"+
+		"\u000f\u0001\u000f\u0001\u0010\u0001\u0010\u0001\u0010\u0000\u0000\u0011"+
+		"\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a"+
+		"\u001c\u001e \u0000\u0004\u0001\u0000\u000b\u0010\u0001\u0000\u0011\u0013"+
+		"\u0003\u0000\u0004\u0004\u0007\u0007\u0018\u001a\u0004\u0000\u0001\u0005"+
+		"\b\n\u0011\u0014\u0017\u001ac\u0000\"\u0001\u0000\u0000\u0000\u0002+\u0001"+
+		"\u0000\u0000\u0000\u0004/\u0001\u0000\u0000\u0000\u00065\u0001\u0000\u0000"+
+		"\u0000\b7\u0001\u0000\u0000\u0000\n;\u0001\u0000\u0000\u0000\fB\u0001"+
+		"\u0000\u0000\u0000\u000eD\u0001\u0000\u0000\u0000\u0010O\u0001\u0000\u0000"+
+		"\u0000\u0012T\u0001\u0000\u0000\u0000\u0014V\u0001\u0000\u0000\u0000\u0016"+
+		"Z\u0001\u0000\u0000\u0000\u0018\\\u0001\u0000\u0000\u0000\u001a`\u0001"+
+		"\u0000\u0000\u0000\u001cb\u0001\u0000\u0000\u0000\u001ed\u0001\u0000\u0000"+
+		"\u0000 f\u0001\u0000\u0000\u0000\"\'\u0003\u0002\u0001\u0000#$\u0005\u0001"+
+		"\u0000\u0000$&\u0003\u0002\u0001\u0000%#\u0001\u0000\u0000\u0000&)\u0001"+
+		"\u0000\u0000\u0000\'%\u0001\u0000\u0000\u0000\'(\u0001\u0000\u0000\u0000"+
+		"(\u0001\u0001\u0000\u0000\u0000)\'\u0001\u0000\u0000\u0000*,\u0003\u0004"+
+		"\u0002\u0000+*\u0001\u0000\u0000\u0000,-\u0001\u0000\u0000\u0000-+\u0001"+
+		"\u0000\u0000\u0000-.\u0001\u0000\u0000\u0000.\u0003\u0001\u0000\u0000"+
+		"\u0000/1\u0003\u0006\u0003\u000002\u0003\u0018\f\u000010\u0001\u0000\u0000"+
+		"\u000012\u0001\u0000\u0000\u00002\u0005\u0001\u0000\u0000\u000036\u0003"+
+		"\f\u0006\u000046\u0003\b\u0004\u000053\u0001\u0000\u0000\u000054\u0001"+
+		"\u0000\u0000\u00006\u0007\u0001\u0000\u0000\u000078\u0005\u0002\u0000"+
+		"\u000089\u0003\u0000\u0000\u00009:\u0005\u0003\u0000\u0000:\t\u0001\u0000"+
+		"\u0000\u0000;<\u0005\u0013\u0000\u0000<=\u0005\u0004\u0000\u0000=\u000b"+
+		"\u0001\u0000\u0000\u0000>C\u0003\u001e\u000f\u0000?C\u0003\u0016\u000b"+
+		"\u0000@C\u0005\n\u0000\u0000AC\u0003\u000e\u0007\u0000B>\u0001\u0000\u0000"+
+		"\u0000B?\u0001\u0000\u0000\u0000B@\u0001\u0000\u0000\u0000BA\u0001\u0000"+
+		"\u0000\u0000C\r\u0001\u0000\u0000\u0000DF\u0005\u0005\u0000\u0000EG\u0003"+
+		"\u0010\b\u0000FE\u0001\u0000\u0000\u0000FG\u0001\u0000\u0000\u0000GI\u0001"+
+		"\u0000\u0000\u0000HJ\u0003\u0012\t\u0000IH\u0001\u0000\u0000\u0000JK\u0001"+
+		"\u0000\u0000\u0000KI\u0001\u0000\u0000\u0000KL\u0001\u0000\u0000\u0000"+
+		"LM\u0001\u0000\u0000\u0000MN\u0005\u0006\u0000\u0000N\u000f\u0001\u0000"+
+		"\u0000\u0000OP\u0005\u0014\u0000\u0000P\u0011\u0001\u0000\u0000\u0000"+
+		"QU\u0003 \u0010\u0000RU\u0003\u0016\u000b\u0000SU\u0003\u0014\n\u0000"+
+		"TQ\u0001\u0000\u0000\u0000TR\u0001\u0000\u0000\u0000TS\u0001\u0000\u0000"+
+		"\u0000U\u0013\u0001\u0000\u0000\u0000VW\u0003 \u0010\u0000WX\u0005\u0007"+
+		"\u0000\u0000XY\u0003 \u0010\u0000Y\u0015\u0001\u0000\u0000\u0000Z[\u0007"+
+		"\u0000\u0000\u0000[\u0017\u0001\u0000\u0000\u0000\\^\u0003\u001c\u000e"+
+		"\u0000]_\u0003\u001a\r\u0000^]\u0001\u0000\u0000\u0000^_\u0001\u0000\u0000"+
+		"\u0000_\u0019\u0001\u0000\u0000\u0000`a\u0005\u0013\u0000\u0000a\u001b"+
+		"\u0001\u0000\u0000\u0000bc\u0007\u0001\u0000\u0000c\u001d\u0001\u0000"+
+		"\u0000\u0000de\u0007\u0002\u0000\u0000e\u001f\u0001\u0000\u0000\u0000"+
+		"fg\u0007\u0003\u0000\u0000g!\u0001\u0000\u0000\u0000\t\'-15BFKT^";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

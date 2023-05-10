@@ -43,56 +43,57 @@ void regexParserInitialize() {
   assert(regexParserStaticData == nullptr);
   auto staticData = std::make_unique<RegexParserStaticData>(
     std::vector<std::string>{
-      "regex", "expression", "expressionItem", "normalItem", "group", "single", 
-      "characterGroup", "characterGroupNegativeModifier", "characterGroupItem", 
+      "regex", "expression", "expressionItem", "normalItem", "group", "groupNonCapturingModifier", 
+      "single", "characterGroup", "characterGroupNegativeModifier", "characterGroupItem", 
       "characterRange", "characterClass", "quantifier", "lazyModifier", 
       "quantifierType", "char", "charInGroup"
     },
     std::vector<std::string>{
-      "", "'|'", "'('", "')'", "'['", "']'", "'{'", "'}'", "'\\u003F:'", 
-      "'.'", "'^'", "'-'", "'\\w'", "'\\W'", "'\\d'", "'\\D'", "'\\s'", 
-      "'\\S'", "'*'", "'+'", "'\\u003F'", "'\\b'", "'\\B'", "'$'"
+      "", "'|'", "'('", "')'", "':'", "'['", "']'", "'-'", "'{'", "'}'", 
+      "'.'", "'\\w'", "'\\W'", "'\\d'", "'\\D'", "'\\s'", "'\\S'", "'*'", 
+      "'+'", "'\\u003F'", "'^'", "'\\b'", "'\\B'", "'$'"
     },
     std::vector<std::string>{
-      "", "", "", "", "", "", "", "", "GroupNonCapturingModifier", "AnyCharacter", 
-      "Hat", "Hyphen", "CharacterClassAnyWord", "CharacterClassAnyWordInverted", 
-      "CharacterClassAnyDecimalDigit", "CharacterClassAnyDecimalDigitInverted", 
-      "CharacterClassAnyBlank", "CharacterClassAnyBlankInverted", "ZeroOrMoreQuantifier", 
-      "OneOrMoreQuantifier", "ZeroOrOneQuantifier", "AnchorWordBoundary", 
+      "", "", "", "", "", "", "", "", "", "", "AnyCharacter", "CharacterClassAnyWord", 
+      "CharacterClassAnyWordInverted", "CharacterClassAnyDecimalDigit", 
+      "CharacterClassAnyDecimalDigitInverted", "CharacterClassAnyBlank", 
+      "CharacterClassAnyBlankInverted", "ZeroOrMoreQuantifier", "OneOrMoreQuantifier", 
+      "ZeroOrOneQuantifier", "AnchorStartOfString", "AnchorWordBoundary", 
       "AnchorNonWordBoundary", "AnchorEndOfString", "EscapedChar", "Digit", 
       "Char"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,26,100,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,26,105,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
-  	14,2,15,7,15,1,0,1,0,1,0,5,0,36,8,0,10,0,12,0,39,9,0,1,1,4,1,42,8,1,11,
-  	1,12,1,43,1,2,1,2,3,2,48,8,2,1,3,1,3,3,3,52,8,3,1,4,1,4,1,4,1,4,1,5,1,
-  	5,1,5,1,5,3,5,62,8,5,1,6,1,6,3,6,66,8,6,1,6,4,6,69,8,6,11,6,12,6,70,1,
-  	6,1,6,1,7,1,7,1,8,1,8,1,8,3,8,80,8,8,1,9,1,9,1,9,1,9,1,10,1,10,1,11,1,
-  	11,3,11,90,8,11,1,12,1,12,1,13,1,13,1,14,1,14,1,15,1,15,1,15,0,0,16,0,
-  	2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,4,1,0,12,17,1,0,18,20,2,0,
-  	11,11,24,26,5,0,1,4,6,7,9,10,18,20,23,26,95,0,32,1,0,0,0,2,41,1,0,0,0,
-  	4,45,1,0,0,0,6,51,1,0,0,0,8,53,1,0,0,0,10,61,1,0,0,0,12,63,1,0,0,0,14,
-  	74,1,0,0,0,16,79,1,0,0,0,18,81,1,0,0,0,20,85,1,0,0,0,22,87,1,0,0,0,24,
-  	91,1,0,0,0,26,93,1,0,0,0,28,95,1,0,0,0,30,97,1,0,0,0,32,37,3,2,1,0,33,
-  	34,5,1,0,0,34,36,3,2,1,0,35,33,1,0,0,0,36,39,1,0,0,0,37,35,1,0,0,0,37,
-  	38,1,0,0,0,38,1,1,0,0,0,39,37,1,0,0,0,40,42,3,4,2,0,41,40,1,0,0,0,42,
-  	43,1,0,0,0,43,41,1,0,0,0,43,44,1,0,0,0,44,3,1,0,0,0,45,47,3,6,3,0,46,
-  	48,3,22,11,0,47,46,1,0,0,0,47,48,1,0,0,0,48,5,1,0,0,0,49,52,3,10,5,0,
-  	50,52,3,8,4,0,51,49,1,0,0,0,51,50,1,0,0,0,52,7,1,0,0,0,53,54,5,2,0,0,
-  	54,55,3,0,0,0,55,56,5,3,0,0,56,9,1,0,0,0,57,62,3,28,14,0,58,62,3,20,10,
-  	0,59,62,5,9,0,0,60,62,3,12,6,0,61,57,1,0,0,0,61,58,1,0,0,0,61,59,1,0,
-  	0,0,61,60,1,0,0,0,62,11,1,0,0,0,63,65,5,4,0,0,64,66,3,14,7,0,65,64,1,
-  	0,0,0,65,66,1,0,0,0,66,68,1,0,0,0,67,69,3,16,8,0,68,67,1,0,0,0,69,70,
-  	1,0,0,0,70,68,1,0,0,0,70,71,1,0,0,0,71,72,1,0,0,0,72,73,5,5,0,0,73,13,
-  	1,0,0,0,74,75,5,10,0,0,75,15,1,0,0,0,76,80,3,30,15,0,77,80,3,20,10,0,
-  	78,80,3,18,9,0,79,76,1,0,0,0,79,77,1,0,0,0,79,78,1,0,0,0,80,17,1,0,0,
-  	0,81,82,3,30,15,0,82,83,5,11,0,0,83,84,3,30,15,0,84,19,1,0,0,0,85,86,
-  	7,0,0,0,86,21,1,0,0,0,87,89,3,26,13,0,88,90,3,24,12,0,89,88,1,0,0,0,89,
-  	90,1,0,0,0,90,23,1,0,0,0,91,92,5,20,0,0,92,25,1,0,0,0,93,94,7,1,0,0,94,
-  	27,1,0,0,0,95,96,7,2,0,0,96,29,1,0,0,0,97,98,7,3,0,0,98,31,1,0,0,0,9,
-  	37,43,47,51,61,65,70,79,89
+  	14,2,15,7,15,2,16,7,16,1,0,1,0,1,0,5,0,38,8,0,10,0,12,0,41,9,0,1,1,4,
+  	1,44,8,1,11,1,12,1,45,1,2,1,2,3,2,50,8,2,1,3,1,3,3,3,54,8,3,1,4,1,4,1,
+  	4,1,4,1,5,1,5,1,5,1,6,1,6,1,6,1,6,3,6,67,8,6,1,7,1,7,3,7,71,8,7,1,7,4,
+  	7,74,8,7,11,7,12,7,75,1,7,1,7,1,8,1,8,1,9,1,9,1,9,3,9,85,8,9,1,10,1,10,
+  	1,10,1,10,1,11,1,11,1,12,1,12,3,12,95,8,12,1,13,1,13,1,14,1,14,1,15,1,
+  	15,1,16,1,16,1,16,0,0,17,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,
+  	0,4,1,0,11,16,1,0,17,19,3,0,4,4,7,7,24,26,4,0,1,5,8,10,17,20,23,26,99,
+  	0,34,1,0,0,0,2,43,1,0,0,0,4,47,1,0,0,0,6,53,1,0,0,0,8,55,1,0,0,0,10,59,
+  	1,0,0,0,12,66,1,0,0,0,14,68,1,0,0,0,16,79,1,0,0,0,18,84,1,0,0,0,20,86,
+  	1,0,0,0,22,90,1,0,0,0,24,92,1,0,0,0,26,96,1,0,0,0,28,98,1,0,0,0,30,100,
+  	1,0,0,0,32,102,1,0,0,0,34,39,3,2,1,0,35,36,5,1,0,0,36,38,3,2,1,0,37,35,
+  	1,0,0,0,38,41,1,0,0,0,39,37,1,0,0,0,39,40,1,0,0,0,40,1,1,0,0,0,41,39,
+  	1,0,0,0,42,44,3,4,2,0,43,42,1,0,0,0,44,45,1,0,0,0,45,43,1,0,0,0,45,46,
+  	1,0,0,0,46,3,1,0,0,0,47,49,3,6,3,0,48,50,3,24,12,0,49,48,1,0,0,0,49,50,
+  	1,0,0,0,50,5,1,0,0,0,51,54,3,12,6,0,52,54,3,8,4,0,53,51,1,0,0,0,53,52,
+  	1,0,0,0,54,7,1,0,0,0,55,56,5,2,0,0,56,57,3,0,0,0,57,58,5,3,0,0,58,9,1,
+  	0,0,0,59,60,5,19,0,0,60,61,5,4,0,0,61,11,1,0,0,0,62,67,3,30,15,0,63,67,
+  	3,22,11,0,64,67,5,10,0,0,65,67,3,14,7,0,66,62,1,0,0,0,66,63,1,0,0,0,66,
+  	64,1,0,0,0,66,65,1,0,0,0,67,13,1,0,0,0,68,70,5,5,0,0,69,71,3,16,8,0,70,
+  	69,1,0,0,0,70,71,1,0,0,0,71,73,1,0,0,0,72,74,3,18,9,0,73,72,1,0,0,0,74,
+  	75,1,0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,77,1,0,0,0,77,78,5,6,0,0,78,
+  	15,1,0,0,0,79,80,5,20,0,0,80,17,1,0,0,0,81,85,3,32,16,0,82,85,3,22,11,
+  	0,83,85,3,20,10,0,84,81,1,0,0,0,84,82,1,0,0,0,84,83,1,0,0,0,85,19,1,0,
+  	0,0,86,87,3,32,16,0,87,88,5,7,0,0,88,89,3,32,16,0,89,21,1,0,0,0,90,91,
+  	7,0,0,0,91,23,1,0,0,0,92,94,3,28,14,0,93,95,3,26,13,0,94,93,1,0,0,0,94,
+  	95,1,0,0,0,95,25,1,0,0,0,96,97,5,19,0,0,97,27,1,0,0,0,98,99,7,1,0,0,99,
+  	29,1,0,0,0,100,101,7,2,0,0,101,31,1,0,0,0,102,103,7,3,0,0,103,33,1,0,
+  	0,0,9,39,45,49,53,66,70,75,84,94
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -186,17 +187,17 @@ regexParser::RegexContext* regexParser::regex() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(32);
+    setState(34);
     expression();
-    setState(37);
+    setState(39);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == regexParser::T__0) {
-      setState(33);
+      setState(35);
       match(regexParser::T__0);
-      setState(34);
+      setState(36);
       expression();
-      setState(39);
+      setState(41);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -256,17 +257,17 @@ regexParser::ExpressionContext* regexParser::expression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(41); 
+    setState(43); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(40);
+      setState(42);
       expressionItem();
-      setState(43); 
+      setState(45); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 117701140) != 0));
+      ((1ULL << _la) & 117570740) != 0));
    
   }
   catch (RecognitionException &e) {
@@ -323,15 +324,15 @@ regexParser::ExpressionItemContext* regexParser::expressionItem() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(45);
-    normalItem();
     setState(47);
+    normalItem();
+    setState(49);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 1835008) != 0)) {
-      setState(46);
+      ((1ULL << _la) & 917504) != 0)) {
+      setState(48);
       quantifier();
     }
    
@@ -388,12 +389,13 @@ regexParser::NormalItemContext* regexParser::normalItem() {
     exitRule();
   });
   try {
-    setState(51);
+    setState(53);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case regexParser::T__3:
+      case regexParser::T__4:
+      case regexParser::T__6:
       case regexParser::AnyCharacter:
-      case regexParser::Hyphen:
       case regexParser::CharacterClassAnyWord:
       case regexParser::CharacterClassAnyWordInverted:
       case regexParser::CharacterClassAnyDecimalDigit:
@@ -404,14 +406,14 @@ regexParser::NormalItemContext* regexParser::normalItem() {
       case regexParser::Digit:
       case regexParser::Char: {
         enterOuterAlt(_localctx, 1);
-        setState(49);
+        setState(51);
         single();
         break;
       }
 
       case regexParser::T__1: {
         enterOuterAlt(_localctx, 2);
-        setState(50);
+        setState(52);
         group();
         break;
       }
@@ -470,12 +472,67 @@ regexParser::GroupContext* regexParser::group() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(53);
-    match(regexParser::T__1);
-    setState(54);
-    regex();
     setState(55);
+    match(regexParser::T__1);
+    setState(56);
+    regex();
+    setState(57);
     match(regexParser::T__2);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- GroupNonCapturingModifierContext ------------------------------------------------------------------
+
+regexParser::GroupNonCapturingModifierContext::GroupNonCapturingModifierContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* regexParser::GroupNonCapturingModifierContext::ZeroOrOneQuantifier() {
+  return getToken(regexParser::ZeroOrOneQuantifier, 0);
+}
+
+
+size_t regexParser::GroupNonCapturingModifierContext::getRuleIndex() const {
+  return regexParser::RuleGroupNonCapturingModifier;
+}
+
+void regexParser::GroupNonCapturingModifierContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<regexListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterGroupNonCapturingModifier(this);
+}
+
+void regexParser::GroupNonCapturingModifierContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<regexListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitGroupNonCapturingModifier(this);
+}
+
+regexParser::GroupNonCapturingModifierContext* regexParser::groupNonCapturingModifier() {
+  GroupNonCapturingModifierContext *_localctx = _tracker.createInstance<GroupNonCapturingModifierContext>(_ctx, getState());
+  enterRule(_localctx, 10, regexParser::RuleGroupNonCapturingModifier);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(59);
+    match(regexParser::ZeroOrOneQuantifier);
+    setState(60);
+    match(regexParser::T__3);
    
   }
   catch (RecognitionException &e) {
@@ -528,7 +585,7 @@ void regexParser::SingleContext::exitRule(tree::ParseTreeListener *listener) {
 
 regexParser::SingleContext* regexParser::single() {
   SingleContext *_localctx = _tracker.createInstance<SingleContext>(_ctx, getState());
-  enterRule(_localctx, 10, regexParser::RuleSingle);
+  enterRule(_localctx, 12, regexParser::RuleSingle);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -538,15 +595,16 @@ regexParser::SingleContext* regexParser::single() {
     exitRule();
   });
   try {
-    setState(61);
+    setState(66);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case regexParser::Hyphen:
+      case regexParser::T__3:
+      case regexParser::T__6:
       case regexParser::EscapedChar:
       case regexParser::Digit:
       case regexParser::Char: {
         enterOuterAlt(_localctx, 1);
-        setState(57);
+        setState(62);
         char_();
         break;
       }
@@ -558,21 +616,21 @@ regexParser::SingleContext* regexParser::single() {
       case regexParser::CharacterClassAnyBlank:
       case regexParser::CharacterClassAnyBlankInverted: {
         enterOuterAlt(_localctx, 2);
-        setState(58);
+        setState(63);
         characterClass();
         break;
       }
 
       case regexParser::AnyCharacter: {
         enterOuterAlt(_localctx, 3);
-        setState(59);
+        setState(64);
         match(regexParser::AnyCharacter);
         break;
       }
 
-      case regexParser::T__3: {
+      case regexParser::T__4: {
         enterOuterAlt(_localctx, 4);
-        setState(60);
+        setState(65);
         characterGroup();
         break;
       }
@@ -628,7 +686,7 @@ void regexParser::CharacterGroupContext::exitRule(tree::ParseTreeListener *liste
 
 regexParser::CharacterGroupContext* regexParser::characterGroup() {
   CharacterGroupContext *_localctx = _tracker.createInstance<CharacterGroupContext>(_ctx, getState());
-  enterRule(_localctx, 12, regexParser::RuleCharacterGroup);
+  enterRule(_localctx, 14, regexParser::RuleCharacterGroup);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -640,14 +698,14 @@ regexParser::CharacterGroupContext* regexParser::characterGroup() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(63);
-    match(regexParser::T__3);
-    setState(65);
+    setState(68);
+    match(regexParser::T__4);
+    setState(70);
     _errHandler->sync(this);
 
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx)) {
     case 1: {
-      setState(64);
+      setState(69);
       characterGroupNegativeModifier();
       break;
     }
@@ -655,19 +713,19 @@ regexParser::CharacterGroupContext* regexParser::characterGroup() {
     default:
       break;
     }
-    setState(68); 
+    setState(73); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(67);
+      setState(72);
       characterGroupItem();
-      setState(70); 
+      setState(75); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 127923934) != 0));
-    setState(72);
-    match(regexParser::T__4);
+      ((1ULL << _la) & 127926078) != 0));
+    setState(77);
+    match(regexParser::T__5);
    
   }
   catch (RecognitionException &e) {
@@ -685,8 +743,8 @@ regexParser::CharacterGroupNegativeModifierContext::CharacterGroupNegativeModifi
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* regexParser::CharacterGroupNegativeModifierContext::Hat() {
-  return getToken(regexParser::Hat, 0);
+tree::TerminalNode* regexParser::CharacterGroupNegativeModifierContext::AnchorStartOfString() {
+  return getToken(regexParser::AnchorStartOfString, 0);
 }
 
 
@@ -708,7 +766,7 @@ void regexParser::CharacterGroupNegativeModifierContext::exitRule(tree::ParseTre
 
 regexParser::CharacterGroupNegativeModifierContext* regexParser::characterGroupNegativeModifier() {
   CharacterGroupNegativeModifierContext *_localctx = _tracker.createInstance<CharacterGroupNegativeModifierContext>(_ctx, getState());
-  enterRule(_localctx, 14, regexParser::RuleCharacterGroupNegativeModifier);
+  enterRule(_localctx, 16, regexParser::RuleCharacterGroupNegativeModifier);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -719,8 +777,8 @@ regexParser::CharacterGroupNegativeModifierContext* regexParser::characterGroupN
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(74);
-    match(regexParser::Hat);
+    setState(79);
+    match(regexParser::AnchorStartOfString);
    
   }
   catch (RecognitionException &e) {
@@ -769,7 +827,7 @@ void regexParser::CharacterGroupItemContext::exitRule(tree::ParseTreeListener *l
 
 regexParser::CharacterGroupItemContext* regexParser::characterGroupItem() {
   CharacterGroupItemContext *_localctx = _tracker.createInstance<CharacterGroupItemContext>(_ctx, getState());
-  enterRule(_localctx, 16, regexParser::RuleCharacterGroupItem);
+  enterRule(_localctx, 18, regexParser::RuleCharacterGroupItem);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -779,26 +837,26 @@ regexParser::CharacterGroupItemContext* regexParser::characterGroupItem() {
     exitRule();
   });
   try {
-    setState(79);
+    setState(84);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 7, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(76);
+      setState(81);
       charInGroup();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(77);
+      setState(82);
       characterClass();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(78);
+      setState(83);
       characterRange();
       break;
     }
@@ -831,10 +889,6 @@ regexParser::CharInGroupContext* regexParser::CharacterRangeContext::charInGroup
   return getRuleContext<regexParser::CharInGroupContext>(i);
 }
 
-tree::TerminalNode* regexParser::CharacterRangeContext::Hyphen() {
-  return getToken(regexParser::Hyphen, 0);
-}
-
 
 size_t regexParser::CharacterRangeContext::getRuleIndex() const {
   return regexParser::RuleCharacterRange;
@@ -854,7 +908,7 @@ void regexParser::CharacterRangeContext::exitRule(tree::ParseTreeListener *liste
 
 regexParser::CharacterRangeContext* regexParser::characterRange() {
   CharacterRangeContext *_localctx = _tracker.createInstance<CharacterRangeContext>(_ctx, getState());
-  enterRule(_localctx, 18, regexParser::RuleCharacterRange);
+  enterRule(_localctx, 20, regexParser::RuleCharacterRange);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -865,11 +919,11 @@ regexParser::CharacterRangeContext* regexParser::characterRange() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(81);
+    setState(86);
     charInGroup();
-    setState(82);
-    match(regexParser::Hyphen);
-    setState(83);
+    setState(87);
+    match(regexParser::T__6);
+    setState(88);
     charInGroup();
    
   }
@@ -931,7 +985,7 @@ void regexParser::CharacterClassContext::exitRule(tree::ParseTreeListener *liste
 
 regexParser::CharacterClassContext* regexParser::characterClass() {
   CharacterClassContext *_localctx = _tracker.createInstance<CharacterClassContext>(_ctx, getState());
-  enterRule(_localctx, 20, regexParser::RuleCharacterClass);
+  enterRule(_localctx, 22, regexParser::RuleCharacterClass);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -943,10 +997,10 @@ regexParser::CharacterClassContext* regexParser::characterClass() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(85);
+    setState(90);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 258048) != 0))) {
+      ((1ULL << _la) & 129024) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -997,7 +1051,7 @@ void regexParser::QuantifierContext::exitRule(tree::ParseTreeListener *listener)
 
 regexParser::QuantifierContext* regexParser::quantifier() {
   QuantifierContext *_localctx = _tracker.createInstance<QuantifierContext>(_ctx, getState());
-  enterRule(_localctx, 22, regexParser::RuleQuantifier);
+  enterRule(_localctx, 24, regexParser::RuleQuantifier);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1009,14 +1063,14 @@ regexParser::QuantifierContext* regexParser::quantifier() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(87);
+    setState(92);
     quantifierType();
-    setState(89);
+    setState(94);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == regexParser::ZeroOrOneQuantifier) {
-      setState(88);
+      setState(93);
       lazyModifier();
     }
    
@@ -1059,7 +1113,7 @@ void regexParser::LazyModifierContext::exitRule(tree::ParseTreeListener *listene
 
 regexParser::LazyModifierContext* regexParser::lazyModifier() {
   LazyModifierContext *_localctx = _tracker.createInstance<LazyModifierContext>(_ctx, getState());
-  enterRule(_localctx, 24, regexParser::RuleLazyModifier);
+  enterRule(_localctx, 26, regexParser::RuleLazyModifier);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1070,7 +1124,7 @@ regexParser::LazyModifierContext* regexParser::lazyModifier() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(91);
+    setState(96);
     match(regexParser::ZeroOrOneQuantifier);
    
   }
@@ -1120,7 +1174,7 @@ void regexParser::QuantifierTypeContext::exitRule(tree::ParseTreeListener *liste
 
 regexParser::QuantifierTypeContext* regexParser::quantifierType() {
   QuantifierTypeContext *_localctx = _tracker.createInstance<QuantifierTypeContext>(_ctx, getState());
-  enterRule(_localctx, 26, regexParser::RuleQuantifierType);
+  enterRule(_localctx, 28, regexParser::RuleQuantifierType);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1132,10 +1186,10 @@ regexParser::QuantifierTypeContext* regexParser::quantifierType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(93);
+    setState(98);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 1835008) != 0))) {
+      ((1ULL << _la) & 917504) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -1171,10 +1225,6 @@ tree::TerminalNode* regexParser::CharContext::Char() {
   return getToken(regexParser::Char, 0);
 }
 
-tree::TerminalNode* regexParser::CharContext::Hyphen() {
-  return getToken(regexParser::Hyphen, 0);
-}
-
 
 size_t regexParser::CharContext::getRuleIndex() const {
   return regexParser::RuleChar;
@@ -1194,7 +1244,7 @@ void regexParser::CharContext::exitRule(tree::ParseTreeListener *listener) {
 
 regexParser::CharContext* regexParser::char_() {
   CharContext *_localctx = _tracker.createInstance<CharContext>(_ctx, getState());
-  enterRule(_localctx, 28, regexParser::RuleChar);
+  enterRule(_localctx, 30, regexParser::RuleChar);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1206,10 +1256,10 @@ regexParser::CharContext* regexParser::char_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(95);
+    setState(100);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 117442560) != 0))) {
+      ((1ULL << _la) & 117440656) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -1249,8 +1299,8 @@ tree::TerminalNode* regexParser::CharInGroupContext::AnyCharacter() {
   return getToken(regexParser::AnyCharacter, 0);
 }
 
-tree::TerminalNode* regexParser::CharInGroupContext::Hat() {
-  return getToken(regexParser::Hat, 0);
+tree::TerminalNode* regexParser::CharInGroupContext::AnchorStartOfString() {
+  return getToken(regexParser::AnchorStartOfString, 0);
 }
 
 tree::TerminalNode* regexParser::CharInGroupContext::AnchorEndOfString() {
@@ -1288,7 +1338,7 @@ void regexParser::CharInGroupContext::exitRule(tree::ParseTreeListener *listener
 
 regexParser::CharInGroupContext* regexParser::charInGroup() {
   CharInGroupContext *_localctx = _tracker.createInstance<CharInGroupContext>(_ctx, getState());
-  enterRule(_localctx, 30, regexParser::RuleCharInGroup);
+  enterRule(_localctx, 32, regexParser::RuleCharInGroup);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1300,10 +1350,10 @@ regexParser::CharInGroupContext* regexParser::charInGroup() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(97);
+    setState(102);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 127665886) != 0))) {
+      ((1ULL << _la) & 127797054) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {

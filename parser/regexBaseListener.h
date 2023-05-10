@@ -31,6 +31,9 @@ public:
   virtual void enterGroup(regexParser::GroupContext * /*ctx*/) override { }
   virtual void exitGroup(regexParser::GroupContext * /*ctx*/) override { }
 
+  virtual void enterGroupNonCapturingModifier(regexParser::GroupNonCapturingModifierContext * /*ctx*/) override { }
+  virtual void exitGroupNonCapturingModifier(regexParser::GroupNonCapturingModifierContext * /*ctx*/) override { }
+
   virtual void enterSingle(regexParser::SingleContext * /*ctx*/) override { }
   virtual void exitSingle(regexParser::SingleContext * /*ctx*/) override { }
 

@@ -76,6 +76,18 @@ public class regexBaseListener implements regexListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGroupNonCapturingModifier(regexParser.GroupNonCapturingModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGroupNonCapturingModifier(regexParser.GroupNonCapturingModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSingle(regexParser.SingleContext ctx) { }
 	/**
 	 * {@inheritDoc}
