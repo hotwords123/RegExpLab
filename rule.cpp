@@ -30,6 +30,7 @@ bool Rule::matches(unsigned char ch) const {
 
     if (type == SPECIAL) {
         switch (by.front()) {
+            case '*': return true;
             case '.': return ch != '\r' && ch != '\n';
             case 'd': return std::isdigit(ch);
             case 's': return std::isspace(ch);
