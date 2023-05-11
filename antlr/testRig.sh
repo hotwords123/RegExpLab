@@ -12,7 +12,7 @@ cd "$(dirname $0)"
 
 if ! cmp -s "$GRAMMAR_FILE" "$GRAMMAR_FILE_CACHE"; then
   echo "cleaning old parser classes"
-  rm -r $CLASS_OUTPUT_PATH
+  rm -r $CLASS_OUTPUT_PATH || true
 fi
 
 if [ ! -d $CLASS_OUTPUT_PATH ]; then
