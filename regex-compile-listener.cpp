@@ -191,7 +191,7 @@ void RegexCompileListener::buildFrom(regexParser::RegexContext *tree) {
     assemble(fragment, 0, 1);
 
     // 允许从任意位置开始匹配
-    regex.nfa.add_rule(0, { 0, SPECIAL, "." });
+    regex.nfa.add_rule(0, { 0, SPECIAL, "*" });
 
     std::cout << regex.nfa;
 }
