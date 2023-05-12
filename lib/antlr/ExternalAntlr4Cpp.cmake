@@ -189,7 +189,13 @@ if(NOT ANTLR_BUILD_CPP_TESTS)
   # if ANTLR_BUILD_CPP_TESTS is OFF, then the target in ${ANTLR4_ROOT}/runtime/Cpp/runtimeCMakeLists.txt
   # will not copy the generated binaries into into ${ANTLR4_ROOT}/runtime/Cpp/dist.
   # So, we need to copy them now.
-  set(ANTLR4_RUNTIME_CMAKE_HOME ${ANTLR4_ROOT}/runtime/Cpp/runtime)
+  if(${CMAKE_GENERATOR} MATCHES "Visual Studio.*")
+    set(ANTLR4_RUNTIME_CMAKE_HOME ${ANTLR4_ROOT}/runtime/Cpp/runtime/$(Configuration))
+  elseif(${CMAKE_GENERATOR} MATCHES "Xcode.*")
+    set(ANTLR4_RUNTIME_CMAKE_HOME ${ANTLR4_ROOT}/runtime/Cpp/runtime/$(CONFIGURATION))
+  else()
+    set(ANTLR4_RUNTIME_CMAKE_HOME ${ANTLR4_ROOT}/runtime/Cpp/runtime)
+  endif()
   get_filename_component(ANTLR4_STATIC_LIBRARIES_BASENAME ${ANTLR4_STATIC_LIBRARIES} NAME)
   get_filename_component(ANTLR4_RUNTIME_LIBRARIES_BASENAME ${ANTLR4_RUNTIME_LIBRARIES} NAME)
 
