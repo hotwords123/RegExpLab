@@ -37,7 +37,7 @@ public:
     Path exec();
 
 private:
-    bool dfs(int state, int pos);
+    bool dfs(int state, int pos, int step);
 };
 
 #endif // CPP_NFA_EXECUTOR_H
