@@ -1,8 +1,8 @@
 #include "regex-compile-listener.h"
 #include <iostream>
 
-RegexCompileListener::RegexCompileListener(Regex &regex)
-    : regex(regex) {}
+RegexCompileListener::RegexCompileListener(Regex &regex, Regex::Flag flags)
+    : regex(regex), flags(flags) {}
 
 NFAFragment *RegexCompileListener::createFragment(antlr4::RuleContext *ctx, int num_nodes) {
     auto [it, flag] = fragments.emplace(ctx, std::make_unique<NFAFragment>(num_nodes));
@@ -118,7 +118,14 @@ void RegexCompileListener::exitExpressionItem(regexParser::ExpressionItemContext
         auto quantifier = ctx->quantifier();
         applyQuantifier(fragment, itemFragment, quantifier);
     } else if (auto anchor = ctx->anchor()) {
-        fragment->addAnchorRule(0, 1, anchor->getText().back());
+        char type = anchor->getText().back();
+        if (flags & Regex::kMultiline) {
+            switch (type) {
+                case '^': type = 'A'; break;
+                case '$': type = 'Z'; break;
+            }
+        }
+        fragment->addAnchorRule(0, 1, type);
     }
 }
 
@@ -164,7 +171,7 @@ void RegexCompileListener::exitNormalItem(regexParser::NormalItemContext *ctx) {
             // 字符类别取最后一位用于区分
             fragment->addSpecialRule(0, 1, characterClass->getText().back());
         } else if (single->AnyCharacter()) {
-            fragment->addSpecialRule(0, 1, '.');
+            fragment->addSpecialRule(0, 1, (flags & Regex::kDotAll) ? '*' : '.');
         } else if (auto characterGroup = single->characterGroup()) {
             fragment->addFragment(0, 1, getFragment(characterGroup));
         }

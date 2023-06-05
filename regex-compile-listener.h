@@ -9,12 +9,13 @@
 
 class RegexCompileListener : public regexBaseListener {
     Regex &regex;
+    Regex::Flag flags;
 
     // 存储每棵子树编译得到的 NFA 片段
     std::unordered_map<antlr4::RuleContext *, std::unique_ptr<NFAFragment>> fragments;
 
 public:
-    RegexCompileListener(Regex &regex);
+    RegexCompileListener(Regex &regex, Regex::Flag flags);
 
     void exitRegex(regexParser::RegexContext *) override;
     void exitExpression(regexParser::ExpressionContext *) override;

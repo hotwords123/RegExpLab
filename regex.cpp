@@ -14,12 +14,20 @@
  * @param flags 正则表达式的修饰符（第二次实验不要求支持，保证传入的永远是空串）
  * @return Regex类的对象
  */
-Regex Regex::compile(const std::string &pattern, const std::string & /*flags*/) {
+Regex Regex::compile(const std::string &pattern, const std::string &flags) {
     auto parser = std::make_unique<ParseUtil>(pattern);
     regexParser::RegexContext *tree = parser->parse();
 
+    Flag mask = 0;
+    for (char flag : flags) {
+        switch (flag) {
+            case 'm': mask |= kMultiline; break;
+            case 's': mask |= kDotAll; break;
+        }
+    }
+
     Regex regex;
-    RegexCompileListener listener(regex);
+    RegexCompileListener listener(regex, mask);
     // 使用 listener 遍历语法树，对每棵子树编译得到 NFA 片段
     listener.buildFrom(tree);
 

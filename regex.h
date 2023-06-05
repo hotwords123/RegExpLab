@@ -47,6 +47,11 @@ class Regex {
     friend class RegexCompileListener;
 
 public:
+    using Flag = unsigned int;
+
+    static constexpr Flag kMultiline = 1u << 0;
+    static constexpr Flag kDotAll = 1u << 1;
+
     Regex() = default;
     Regex(Regex &&) = default;
 

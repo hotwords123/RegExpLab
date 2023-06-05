@@ -1,7 +1,7 @@
 #include "nfa-executor.h"
 
 Path NFAExecutor::exec() {
-    if (dfs(0, 0, 0))
+    if (nfa.num_states > 0 && dfs(0, 0, 0))
         return path;
     else
         return Path::reject();
