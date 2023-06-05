@@ -1,10 +1,13 @@
 #include "nfa-executor.h"
 
-Path NFAExecutor::exec() {
-    if (nfa.num_states > 0 && dfs(0, 0, 0))
-        return path;
-    else
-        return Path::reject();
+Path NFAExecutor::exec(int start_pos) {
+    if (nfa.num_states > 0 && start_pos >= 0 && start_pos < (int)text.size()) {
+        path.states.clear();
+        path.consumes.clear();
+        visited.clear();
+        if (dfs(0, start_pos, 0)) return std::move(path);
+    }
+    return Path::reject();
 }
 
 bool NFAExecutor::dfs(int state, int pos, int step) {
