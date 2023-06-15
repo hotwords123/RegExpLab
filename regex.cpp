@@ -1,7 +1,6 @@
 #include "regex.h"
 #include "regex-compile-listener.h"
 #include "regex-matcher.h"
-#include <cctype>
 
 /**
  * 注：如果你愿意，你可以自由的using namespace。
@@ -13,10 +12,11 @@
  * 和在语法分析树上进行分析（遍历），构造出NFA（需要你完成的部分）。
  * 在语法分析树上进行分析的方法，可以是直接自行访问该树，也可以是使用antlr的Visitor机制，详见作业文档。
  * @param pattern 正则表达式的字符串
- * @param flags 正则表达式的修饰符（第二次实验不要求支持，保证传入的永远是空串）
+ * @param flags 正则表达式的修饰符
  * @return Regex类的对象
  */
 Regex Regex::compile(const std::string &pattern, const std::string &flags) {
+    // ParseUtil 只在编译时使用，编译完成即可释放，不需要存在 Regex 里
     auto parser = std::make_unique<ParseUtil>(pattern);
     regexParser::RegexContext *tree = parser->parse();
 
@@ -63,7 +63,9 @@ std::string Regex::replaceAll(const std::string &text, const std::string &replac
         result.append(text, pos, begin - pos);
         matcher.appendReplacement(result, replacement);
         if (begin == end) { // 匹配空串
+            // 若到达末尾则结束
             if (end == (int)text.length()) break;
+            // 否则跳过一个字符，防止死循环
             result.push_back(text[end]);
             pos = end + 1;
         } else {

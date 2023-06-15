@@ -48,7 +48,7 @@ public:
     /**
      * 计算当前匹配被替换后的子串，并添加到目标字符串末尾。
      * @param target 目标字符串
-     * @param replacement 替换格式，\n 表示第 n 个捕获组
+     * @param replacement 替换格式，$n 表示第 n 个捕获组
      */
     void appendReplacement(std::string &target, const std::string &replacement) const;
 };

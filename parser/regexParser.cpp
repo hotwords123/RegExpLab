@@ -73,7 +73,7 @@ void regexParserInitialize() {
   	4,3,4,73,8,4,1,4,1,4,1,4,1,5,1,5,1,5,1,6,1,6,1,6,1,6,3,6,85,8,6,1,7,1,
   	7,3,7,89,8,7,1,7,4,7,92,8,7,11,7,12,7,93,1,7,1,7,1,8,1,8,1,9,1,9,1,9,
   	3,9,103,8,9,1,10,1,10,1,10,1,10,1,11,1,11,1,12,1,12,3,12,113,8,12,1,13,
-  	1,13,1,14,1,14,1,14,1,14,3,14,121,8,14,1,15,1,15,1,15,1,15,3,15,127,8,
+  	1,13,1,14,1,14,1,14,1,14,3,14,121,8,14,1,15,1,15,1,15,3,15,126,8,15,1,
   	15,3,15,129,8,15,1,15,1,15,1,16,1,16,1,17,1,17,1,18,1,18,1,19,4,19,140,
   	8,19,11,19,12,19,141,1,20,1,20,1,21,1,21,1,22,1,22,1,22,0,0,23,0,2,4,
   	6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,0,4,1,0,12,
@@ -102,15 +102,15 @@ void regexParserInitialize() {
   	111,113,3,26,13,0,112,111,1,0,0,0,112,113,1,0,0,0,113,25,1,0,0,0,114,
   	115,5,20,0,0,115,27,1,0,0,0,116,121,5,18,0,0,117,121,5,19,0,0,118,121,
   	5,20,0,0,119,121,3,30,15,0,120,116,1,0,0,0,120,117,1,0,0,0,120,118,1,
-  	0,0,0,120,119,1,0,0,0,121,29,1,0,0,0,122,123,5,8,0,0,123,128,3,34,17,
-  	0,124,126,3,32,16,0,125,127,3,36,18,0,126,125,1,0,0,0,126,127,1,0,0,0,
-  	127,129,1,0,0,0,128,124,1,0,0,0,128,129,1,0,0,0,129,130,1,0,0,0,130,131,
+  	0,0,0,120,119,1,0,0,0,121,29,1,0,0,0,122,123,5,8,0,0,123,125,3,34,17,
+  	0,124,126,3,32,16,0,125,124,1,0,0,0,125,126,1,0,0,0,126,128,1,0,0,0,127,
+  	129,3,36,18,0,128,127,1,0,0,0,128,129,1,0,0,0,129,130,1,0,0,0,130,131,
   	5,9,0,0,131,31,1,0,0,0,132,133,5,10,0,0,133,33,1,0,0,0,134,135,3,38,19,
   	0,135,35,1,0,0,0,136,137,3,38,19,0,137,37,1,0,0,0,138,140,5,26,0,0,139,
   	138,1,0,0,0,140,141,1,0,0,0,141,139,1,0,0,0,141,142,1,0,0,0,142,39,1,
   	0,0,0,143,144,7,1,0,0,144,41,1,0,0,0,145,146,7,2,0,0,146,43,1,0,0,0,147,
   	148,7,3,0,0,148,45,1,0,0,0,15,51,57,61,64,68,72,84,88,93,102,112,120,
-  	126,128,141
+  	125,128,141
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -1356,21 +1356,21 @@ regexParser::RangeQuantifierContext* regexParser::rangeQuantifier() {
     match(regexParser::T__7);
     setState(123);
     rangeQuantifierLowerBound();
-    setState(128);
+    setState(125);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == regexParser::T__9) {
       setState(124);
       rangeDelimiter();
-      setState(126);
-      _errHandler->sync(this);
+    }
+    setState(128);
+    _errHandler->sync(this);
 
-      _la = _input->LA(1);
-      if (_la == regexParser::Digit) {
-        setState(125);
-        rangeQuantifierUpperBound();
-      }
+    _la = _input->LA(1);
+    if (_la == regexParser::Digit) {
+      setState(127);
+      rangeQuantifierUpperBound();
     }
     setState(130);
     match(regexParser::T__8);
@@ -1574,7 +1574,6 @@ void regexParser::IntegerContext::exitRule(tree::ParseTreeListener *listener) {
 regexParser::IntegerContext* regexParser::integer() {
   IntegerContext *_localctx = _tracker.createInstance<IntegerContext>(_ctx, getState());
   enterRule(_localctx, 38, regexParser::RuleInteger);
-  size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1584,17 +1583,26 @@ regexParser::IntegerContext* regexParser::integer() {
     exitRule();
   });
   try {
+    size_t alt;
     enterOuterAlt(_localctx, 1);
     setState(139); 
     _errHandler->sync(this);
-    _la = _input->LA(1);
+    alt = 1;
     do {
-      setState(138);
-      match(regexParser::Digit);
+      switch (alt) {
+        case 1: {
+              setState(138);
+              match(regexParser::Digit);
+              break;
+            }
+
+      default:
+        throw NoViableAltException(this);
+      }
       setState(141); 
       _errHandler->sync(this);
-      _la = _input->LA(1);
-    } while (_la == regexParser::Digit);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 14, _ctx);
+    } while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER);
    
   }
   catch (RecognitionException &e) {

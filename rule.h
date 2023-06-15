@@ -11,7 +11,7 @@ enum RuleType : int {
     RANGE,   // 字符区间转移。如 a-z
     SPECIAL, // 特殊转移。如 \d （注意Rule的by属性里面是没有斜杠的，只有一个字母如d）
     EPSILON, // epsilon-转移。
-    ANCHOR,  // 锚点转移。如 ^ $ \b \B
+    ANCHOR,  // 锚点转移。如 ^ $ \b \B。特别地，A,Z 分别表示多行模式下的 ^,$
 };
 
 /**
@@ -20,7 +20,7 @@ enum RuleType : int {
 struct Rule {
     int dst; // 目的状态
     RuleType type; // 状态转移的类型，取值见上方的宏定义
-    std::string by; // 对特殊字符转移，这里只有一个字母，如d；对字符区间转移，这里是区间的开头，如a；对一般转移，这里就是转移所需的字母；对epsilon-转移，这里固定为空串。
+    std::string by; // 对特殊字符转移，这里只有一个字母，如d；对字符区间转移，这里是区间的开头，如a；对一般转移，这里就是转移所需的字母；对epsilon-转移，这里固定为空串；对锚点转移，这里对应锚点类型。
     std::string to; // 对字符区间转移，这里是区间的结尾，如z；对任何其他类型的转移，这里固定为空串。
 
     /**

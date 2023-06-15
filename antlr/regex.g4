@@ -81,7 +81,7 @@ OneOrMoreQuantifier : '+';
 ZeroOrOneQuantifier : '?';
 
 /* rangeQuantifier */
-rangeQuantifier : '{' rangeQuantifierLowerBound ( rangeDelimiter rangeQuantifierUpperBound? )? '}';
+rangeQuantifier : '{' rangeQuantifierLowerBound rangeDelimiter? rangeQuantifierUpperBound? '}';
 rangeDelimiter: ',';
 rangeQuantifierLowerBound : integer;
 rangeQuantifierUpperBound : integer;

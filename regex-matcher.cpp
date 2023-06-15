@@ -10,6 +10,7 @@ bool RegexMatcher::match(int start_pos) {
 
     int step = 0;
     int pos = start_pos;
+    // 跳过未匹配的部分
     for (; path.states[step + 1] == 0; step++) {
         pos += path.consumes[step].length();
     }
@@ -43,7 +44,7 @@ std::vector<std::string> RegexMatcher::groups() const {
     std::vector<std::string> groups;
     groups.reserve(regex.group_count + 1);
     for (auto [begin, end] : group_pos) {
-        // TODO: 处理捕获组未匹配的情况
+        // 捕获组未匹配时 begin = end = 0，此时返回空串
         groups.push_back(text.substr(begin, end - begin));
     }
     return groups;

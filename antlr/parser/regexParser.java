@@ -1047,23 +1047,23 @@ public class regexParser extends Parser {
 			match(T__7);
 			setState(123);
 			rangeQuantifierLowerBound();
-			setState(128);
+			setState(125);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__9) {
 				{
 				setState(124);
 				rangeDelimiter();
-				setState(126);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==Digit) {
-					{
-					setState(125);
-					rangeQuantifierUpperBound();
-					}
 				}
+			}
 
+			setState(128);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==Digit) {
+				{
+				setState(127);
+				rangeQuantifierUpperBound();
 				}
 			}
 
@@ -1222,24 +1222,30 @@ public class regexParser extends Parser {
 	public final IntegerContext integer() throws RecognitionException {
 		IntegerContext _localctx = new IntegerContext(_ctx, getState());
 		enterRule(_localctx, 38, RULE_integer);
-		int _la;
 		try {
+			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(139); 
 			_errHandler.sync(this);
-			_la = _input.LA(1);
+			_alt = 1;
 			do {
-				{
-				{
-				setState(138);
-				match(Digit);
-				}
+				switch (_alt) {
+				case 1:
+					{
+					{
+					setState(138);
+					match(Digit);
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
 				setState(141); 
 				_errHandler.sync(this);
-				_la = _input.LA(1);
-			} while ( _la==Digit );
+				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
+			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
 		catch (RecognitionException re) {
@@ -1427,12 +1433,12 @@ public class regexParser extends Parser {
 		"\t\u0003\tg\b\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001\u000b\u0001\u000b"+
 		"\u0001\f\u0001\f\u0003\fq\b\f\u0001\r\u0001\r\u0001\u000e\u0001\u000e"+
 		"\u0001\u000e\u0001\u000e\u0003\u000ey\b\u000e\u0001\u000f\u0001\u000f"+
-		"\u0001\u000f\u0001\u000f\u0003\u000f\u007f\b\u000f\u0003\u000f\u0081\b"+
-		"\u000f\u0001\u000f\u0001\u000f\u0001\u0010\u0001\u0010\u0001\u0011\u0001"+
-		"\u0011\u0001\u0012\u0001\u0012\u0001\u0013\u0004\u0013\u008c\b\u0013\u000b"+
-		"\u0013\f\u0013\u008d\u0001\u0014\u0001\u0014\u0001\u0015\u0001\u0015\u0001"+
-		"\u0016\u0001\u0016\u0001\u0016\u0000\u0000\u0017\u0000\u0002\u0004\u0006"+
-		"\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,\u0000"+
+		"\u0001\u000f\u0003\u000f~\b\u000f\u0001\u000f\u0003\u000f\u0081\b\u000f"+
+		"\u0001\u000f\u0001\u000f\u0001\u0010\u0001\u0010\u0001\u0011\u0001\u0011"+
+		"\u0001\u0012\u0001\u0012\u0001\u0013\u0004\u0013\u008c\b\u0013\u000b\u0013"+
+		"\f\u0013\u008d\u0001\u0014\u0001\u0014\u0001\u0015\u0001\u0015\u0001\u0016"+
+		"\u0001\u0016\u0001\u0016\u0000\u0000\u0017\u0000\u0002\u0004\u0006\b\n"+
+		"\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,\u0000"+
 		"\u0004\u0001\u0000\f\u0011\u0001\u0000\u0015\u0018\u0004\u0000\u0004\u0004"+
 		"\u0007\u0007\n\n\u0019\u001b\u0004\u0000\u0001\u0005\b\u000b\u0012\u0015"+
 		"\u0018\u001b\u0092\u0000.\u0001\u0000\u0000\u0000\u00027\u0001\u0000\u0000"+
@@ -1479,20 +1485,20 @@ public class regexParser extends Parser {
 		"\u0013\u0000\u0000vy\u0005\u0014\u0000\u0000wy\u0003\u001e\u000f\u0000"+
 		"xt\u0001\u0000\u0000\u0000xu\u0001\u0000\u0000\u0000xv\u0001\u0000\u0000"+
 		"\u0000xw\u0001\u0000\u0000\u0000y\u001d\u0001\u0000\u0000\u0000z{\u0005"+
-		"\b\u0000\u0000{\u0080\u0003\"\u0011\u0000|~\u0003 \u0010\u0000}\u007f"+
-		"\u0003$\u0012\u0000~}\u0001\u0000\u0000\u0000~\u007f\u0001\u0000\u0000"+
-		"\u0000\u007f\u0081\u0001\u0000\u0000\u0000\u0080|\u0001\u0000\u0000\u0000"+
-		"\u0080\u0081\u0001\u0000\u0000\u0000\u0081\u0082\u0001\u0000\u0000\u0000"+
-		"\u0082\u0083\u0005\t\u0000\u0000\u0083\u001f\u0001\u0000\u0000\u0000\u0084"+
-		"\u0085\u0005\n\u0000\u0000\u0085!\u0001\u0000\u0000\u0000\u0086\u0087"+
-		"\u0003&\u0013\u0000\u0087#\u0001\u0000\u0000\u0000\u0088\u0089\u0003&"+
-		"\u0013\u0000\u0089%\u0001\u0000\u0000\u0000\u008a\u008c\u0005\u001a\u0000"+
-		"\u0000\u008b\u008a\u0001\u0000\u0000\u0000\u008c\u008d\u0001\u0000\u0000"+
-		"\u0000\u008d\u008b\u0001\u0000\u0000\u0000\u008d\u008e\u0001\u0000\u0000"+
-		"\u0000\u008e\'\u0001\u0000\u0000\u0000\u008f\u0090\u0007\u0001\u0000\u0000"+
-		"\u0090)\u0001\u0000\u0000\u0000\u0091\u0092\u0007\u0002\u0000\u0000\u0092"+
-		"+\u0001\u0000\u0000\u0000\u0093\u0094\u0007\u0003\u0000\u0000\u0094-\u0001"+
-		"\u0000\u0000\u0000\u000f39=@DHTX]fpx~\u0080\u008d";
+		"\b\u0000\u0000{}\u0003\"\u0011\u0000|~\u0003 \u0010\u0000}|\u0001\u0000"+
+		"\u0000\u0000}~\u0001\u0000\u0000\u0000~\u0080\u0001\u0000\u0000\u0000"+
+		"\u007f\u0081\u0003$\u0012\u0000\u0080\u007f\u0001\u0000\u0000\u0000\u0080"+
+		"\u0081\u0001\u0000\u0000\u0000\u0081\u0082\u0001\u0000\u0000\u0000\u0082"+
+		"\u0083\u0005\t\u0000\u0000\u0083\u001f\u0001\u0000\u0000\u0000\u0084\u0085"+
+		"\u0005\n\u0000\u0000\u0085!\u0001\u0000\u0000\u0000\u0086\u0087\u0003"+
+		"&\u0013\u0000\u0087#\u0001\u0000\u0000\u0000\u0088\u0089\u0003&\u0013"+
+		"\u0000\u0089%\u0001\u0000\u0000\u0000\u008a\u008c\u0005\u001a\u0000\u0000"+
+		"\u008b\u008a\u0001\u0000\u0000\u0000\u008c\u008d\u0001\u0000\u0000\u0000"+
+		"\u008d\u008b\u0001\u0000\u0000\u0000\u008d\u008e\u0001\u0000\u0000\u0000"+
+		"\u008e\'\u0001\u0000\u0000\u0000\u008f\u0090\u0007\u0001\u0000\u0000\u0090"+
+		")\u0001\u0000\u0000\u0000\u0091\u0092\u0007\u0002\u0000\u0000\u0092+\u0001"+
+		"\u0000\u0000\u0000\u0093\u0094\u0007\u0003\u0000\u0000\u0094-\u0001\u0000"+
+		"\u0000\u0000\u000f39=@DHTX]fpx}\u0080\u008d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -64,7 +64,6 @@ static void applyQuantifier(NFAFragment *fragment, NFAFragment *itemFragment, re
             if (rangeQuantifier->rangeDelimiter()) {
                 if (auto upperBound = rangeQuantifier->rangeQuantifierUpperBound()) { // E{n,m}
                     max_count = std::stoi(upperBound->getText());
-                    // TODO: check `min_count <= max_count`?
                 } else { // E{n,}
                     max_count = -1;
                 }
@@ -142,7 +141,6 @@ static char parseChar(const std::string &text) {
         case 'r': return '\r';
         case 't': return '\t';
         case 'v': return '\v';
-        case '0': return '\0';
         default: return value;
     }
 }
@@ -282,7 +280,7 @@ void RegexCompileListener::assemble(const NFAFragment *fragment, int initial, in
 
     // 处理不需要最后添加的迁移边
     for (auto &edge : fragment->rule_edges) {
-        if (edge.rule.dst != 1) copyRule(edge);
+        if (edge.rule.dst == 0) copyRule(edge);
     }
 
     // 在 NFA 中递归组装子片段
@@ -294,6 +292,6 @@ void RegexCompileListener::assemble(const NFAFragment *fragment, int initial, in
 
     // 处理需要最后添加的迁移边
     for (auto &edge : fragment->rule_edges) {
-        if (edge.rule.dst == 1) copyRule(edge);
+        if (edge.rule.dst != 0) copyRule(edge);
     }
 }
