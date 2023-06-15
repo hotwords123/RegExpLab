@@ -54,18 +54,6 @@ std::vector<std::vector<std::string>> Regex::matchAll(const std::string &text) {
     return results;
 }
 
-std::string Regex::replace(const std::string &text, const std::string &replacement) {
-    RegexMatcher matcher(*this, text);
-    if (matcher.match()) {
-        auto [begin, end] = matcher.groupPos(0);
-        std::string result(text, 0, begin);
-        matcher.appendReplacement(result, replacement);
-        result.append(text, end);
-        return result;
-    }
-    return text;
-}
-
 std::string Regex::replaceAll(const std::string &text, const std::string &replacement) {
     RegexMatcher matcher(*this, text);
     std::string result;
@@ -74,9 +62,10 @@ std::string Regex::replaceAll(const std::string &text, const std::string &replac
         auto [begin, end] = matcher.groupPos(0);
         result.append(text, pos, begin - pos);
         matcher.appendReplacement(result, replacement);
-        if (pos == (int)text.length()) break;
-        if (pos == end) { // 匹配空串
-            result.push_back(text[pos++]);
+        if (begin == end) { // 匹配空串
+            if (end == (int)text.length()) break;
+            result.push_back(text[end]);
+            pos = end + 1;
         } else {
             pos = end;
         }

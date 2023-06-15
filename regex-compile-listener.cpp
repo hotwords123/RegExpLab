@@ -61,7 +61,7 @@ static void applyQuantifier(NFAFragment *fragment, NFAFragment *itemFragment, re
             auto lowerBound = rangeQuantifier->rangeQuantifierLowerBound();
             min_count = std::stoi(lowerBound->getText());
 
-            if (rangeQuantifier->RangeQuantifierSeparator()) {
+            if (rangeQuantifier->rangeDelimiter()) {
                 if (auto upperBound = rangeQuantifier->rangeQuantifierUpperBound()) { // E{n,m}
                     max_count = std::stoi(upperBound->getText());
                     // TODO: check `min_count <= max_count`?
@@ -249,7 +249,7 @@ void RegexCompileListener::buildFrom(regexParser::RegexContext *tree) {
     // 允许从任意位置开始匹配
     regex.nfa.add_rule(0, { 0, SPECIAL, "*" });
 
-    std::cout << regex.nfa;
+    // std::cout << regex.nfa;
 }
 
 void RegexCompileListener::assemble(const NFAFragment *fragment, int initial, int final) const {

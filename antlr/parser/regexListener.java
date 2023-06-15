@@ -167,6 +167,16 @@ public interface regexListener extends ParseTreeListener {
 	 */
 	void exitRangeQuantifier(regexParser.RangeQuantifierContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link regexParser#rangeDelimiter}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeDelimiter(regexParser.RangeDelimiterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link regexParser#rangeDelimiter}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeDelimiter(regexParser.RangeDelimiterContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link regexParser#rangeQuantifierLowerBound}.
 	 * @param ctx the parse tree
 	 */

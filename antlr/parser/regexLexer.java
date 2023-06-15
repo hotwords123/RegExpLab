@@ -17,12 +17,12 @@ public class regexLexer extends Lexer {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		AnyCharacter=10, CharacterClassAnyWord=11, CharacterClassAnyWordInverted=12, 
-		CharacterClassAnyDecimalDigit=13, CharacterClassAnyDecimalDigitInverted=14, 
-		CharacterClassAnyBlank=15, CharacterClassAnyBlankInverted=16, ZeroOrMoreQuantifier=17, 
-		OneOrMoreQuantifier=18, ZeroOrOneQuantifier=19, RangeQuantifierSeparator=20, 
-		AnchorStartOfString=21, AnchorWordBoundary=22, AnchorNonWordBoundary=23, 
-		AnchorEndOfString=24, EscapedChar=25, Digit=26, Char=27;
+		T__9=10, AnyCharacter=11, CharacterClassAnyWord=12, CharacterClassAnyWordInverted=13, 
+		CharacterClassAnyDecimalDigit=14, CharacterClassAnyDecimalDigitInverted=15, 
+		CharacterClassAnyBlank=16, CharacterClassAnyBlankInverted=17, ZeroOrMoreQuantifier=18, 
+		OneOrMoreQuantifier=19, ZeroOrOneQuantifier=20, AnchorStartOfString=21, 
+		AnchorWordBoundary=22, AnchorNonWordBoundary=23, AnchorEndOfString=24, 
+		EscapedChar=25, Digit=26, Char=27;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -34,12 +34,12 @@ public class regexLexer extends Lexer {
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", 
-			"AnyCharacter", "CharacterClassAnyWord", "CharacterClassAnyWordInverted", 
+			"T__9", "AnyCharacter", "CharacterClassAnyWord", "CharacterClassAnyWordInverted", 
 			"CharacterClassAnyDecimalDigit", "CharacterClassAnyDecimalDigitInverted", 
 			"CharacterClassAnyBlank", "CharacterClassAnyBlankInverted", "ZeroOrMoreQuantifier", 
-			"OneOrMoreQuantifier", "ZeroOrOneQuantifier", "RangeQuantifierSeparator", 
-			"AnchorStartOfString", "AnchorWordBoundary", "AnchorNonWordBoundary", 
-			"AnchorEndOfString", "EscapedChar", "Digit", "Char"
+			"OneOrMoreQuantifier", "ZeroOrOneQuantifier", "AnchorStartOfString", 
+			"AnchorWordBoundary", "AnchorNonWordBoundary", "AnchorEndOfString", "EscapedChar", 
+			"Digit", "Char"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -47,20 +47,19 @@ public class regexLexer extends Lexer {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'|'", "'('", "')'", "':'", "'['", "']'", "'-'", "'{'", "'}'", 
-			"'.'", "'\\w'", "'\\W'", "'\\d'", "'\\D'", "'\\s'", "'\\S'", "'*'", "'+'", 
-			"'?'", "','", "'^'", "'\\b'", "'\\B'", "'$'"
+			"','", "'.'", "'\\w'", "'\\W'", "'\\d'", "'\\D'", "'\\s'", "'\\S'", "'*'", 
+			"'+'", "'?'", "'^'", "'\\b'", "'\\B'", "'$'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, "AnyCharacter", 
+			null, null, null, null, null, null, null, null, null, null, null, "AnyCharacter", 
 			"CharacterClassAnyWord", "CharacterClassAnyWordInverted", "CharacterClassAnyDecimalDigit", 
 			"CharacterClassAnyDecimalDigitInverted", "CharacterClassAnyBlank", "CharacterClassAnyBlankInverted", 
 			"ZeroOrMoreQuantifier", "OneOrMoreQuantifier", "ZeroOrOneQuantifier", 
-			"RangeQuantifierSeparator", "AnchorStartOfString", "AnchorWordBoundary", 
-			"AnchorNonWordBoundary", "AnchorEndOfString", "EscapedChar", "Digit", 
-			"Char"
+			"AnchorStartOfString", "AnchorWordBoundary", "AnchorNonWordBoundary", 
+			"AnchorEndOfString", "EscapedChar", "Digit", "Char"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -134,9 +133,9 @@ public class regexLexer extends Lexer {
 		"\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001"+
 		"\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001"+
 		"\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\t\u0001"+
-		"\t\u0001\n\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001\f"+
-		"\u0001\f\u0001\f\u0001\r\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001"+
-		"\u000e\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u0010\u0001\u0010\u0001"+
+		"\t\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001\f\u0001\f"+
+		"\u0001\f\u0001\r\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001\u000e\u0001"+
+		"\u000f\u0001\u000f\u0001\u000f\u0001\u0010\u0001\u0010\u0001\u0010\u0001"+
 		"\u0011\u0001\u0011\u0001\u0012\u0001\u0012\u0001\u0013\u0001\u0013\u0001"+
 		"\u0014\u0001\u0014\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0016\u0001"+
 		"\u0016\u0001\u0016\u0001\u0017\u0001\u0017\u0001\u0018\u0001\u0018\u0001"+
@@ -162,9 +161,9 @@ public class regexLexer extends Lexer {
 		"\u0000\t?\u0001\u0000\u0000\u0000\u000bA\u0001\u0000\u0000\u0000\rC\u0001"+
 		"\u0000\u0000\u0000\u000fE\u0001\u0000\u0000\u0000\u0011G\u0001\u0000\u0000"+
 		"\u0000\u0013I\u0001\u0000\u0000\u0000\u0015K\u0001\u0000\u0000\u0000\u0017"+
-		"N\u0001\u0000\u0000\u0000\u0019Q\u0001\u0000\u0000\u0000\u001bT\u0001"+
-		"\u0000\u0000\u0000\u001dW\u0001\u0000\u0000\u0000\u001fZ\u0001\u0000\u0000"+
-		"\u0000!]\u0001\u0000\u0000\u0000#_\u0001\u0000\u0000\u0000%a\u0001\u0000"+
+		"M\u0001\u0000\u0000\u0000\u0019P\u0001\u0000\u0000\u0000\u001bS\u0001"+
+		"\u0000\u0000\u0000\u001dV\u0001\u0000\u0000\u0000\u001fY\u0001\u0000\u0000"+
+		"\u0000!\\\u0001\u0000\u0000\u0000#_\u0001\u0000\u0000\u0000%a\u0001\u0000"+
 		"\u0000\u0000\'c\u0001\u0000\u0000\u0000)e\u0001\u0000\u0000\u0000+g\u0001"+
 		"\u0000\u0000\u0000-j\u0001\u0000\u0000\u0000/m\u0001\u0000\u0000\u0000"+
 		"1o\u0001\u0000\u0000\u00003r\u0001\u0000\u0000\u00005t\u0001\u0000\u0000"+
@@ -174,16 +173,16 @@ public class regexLexer extends Lexer {
 		"[\u0000\u0000@\n\u0001\u0000\u0000\u0000AB\u0005]\u0000\u0000B\f\u0001"+
 		"\u0000\u0000\u0000CD\u0005-\u0000\u0000D\u000e\u0001\u0000\u0000\u0000"+
 		"EF\u0005{\u0000\u0000F\u0010\u0001\u0000\u0000\u0000GH\u0005}\u0000\u0000"+
-		"H\u0012\u0001\u0000\u0000\u0000IJ\u0005.\u0000\u0000J\u0014\u0001\u0000"+
-		"\u0000\u0000KL\u0005\\\u0000\u0000LM\u0005w\u0000\u0000M\u0016\u0001\u0000"+
-		"\u0000\u0000NO\u0005\\\u0000\u0000OP\u0005W\u0000\u0000P\u0018\u0001\u0000"+
-		"\u0000\u0000QR\u0005\\\u0000\u0000RS\u0005d\u0000\u0000S\u001a\u0001\u0000"+
-		"\u0000\u0000TU\u0005\\\u0000\u0000UV\u0005D\u0000\u0000V\u001c\u0001\u0000"+
-		"\u0000\u0000WX\u0005\\\u0000\u0000XY\u0005s\u0000\u0000Y\u001e\u0001\u0000"+
-		"\u0000\u0000Z[\u0005\\\u0000\u0000[\\\u0005S\u0000\u0000\\ \u0001\u0000"+
-		"\u0000\u0000]^\u0005*\u0000\u0000^\"\u0001\u0000\u0000\u0000_`\u0005+"+
-		"\u0000\u0000`$\u0001\u0000\u0000\u0000ab\u0005?\u0000\u0000b&\u0001\u0000"+
-		"\u0000\u0000cd\u0005,\u0000\u0000d(\u0001\u0000\u0000\u0000ef\u0005^\u0000"+
+		"H\u0012\u0001\u0000\u0000\u0000IJ\u0005,\u0000\u0000J\u0014\u0001\u0000"+
+		"\u0000\u0000KL\u0005.\u0000\u0000L\u0016\u0001\u0000\u0000\u0000MN\u0005"+
+		"\\\u0000\u0000NO\u0005w\u0000\u0000O\u0018\u0001\u0000\u0000\u0000PQ\u0005"+
+		"\\\u0000\u0000QR\u0005W\u0000\u0000R\u001a\u0001\u0000\u0000\u0000ST\u0005"+
+		"\\\u0000\u0000TU\u0005d\u0000\u0000U\u001c\u0001\u0000\u0000\u0000VW\u0005"+
+		"\\\u0000\u0000WX\u0005D\u0000\u0000X\u001e\u0001\u0000\u0000\u0000YZ\u0005"+
+		"\\\u0000\u0000Z[\u0005s\u0000\u0000[ \u0001\u0000\u0000\u0000\\]\u0005"+
+		"\\\u0000\u0000]^\u0005S\u0000\u0000^\"\u0001\u0000\u0000\u0000_`\u0005"+
+		"*\u0000\u0000`$\u0001\u0000\u0000\u0000ab\u0005+\u0000\u0000b&\u0001\u0000"+
+		"\u0000\u0000cd\u0005?\u0000\u0000d(\u0001\u0000\u0000\u0000ef\u0005^\u0000"+
 		"\u0000f*\u0001\u0000\u0000\u0000gh\u0005\\\u0000\u0000hi\u0005b\u0000"+
 		"\u0000i,\u0001\u0000\u0000\u0000jk\u0005\\\u0000\u0000kl\u0005B\u0000"+
 		"\u0000l.\u0001\u0000\u0000\u0000mn\u0005$\u0000\u0000n0\u0001\u0000\u0000"+

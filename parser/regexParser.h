@@ -13,12 +13,13 @@ class  regexParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, AnyCharacter = 10, CharacterClassAnyWord = 11, CharacterClassAnyWordInverted = 12, 
-    CharacterClassAnyDecimalDigit = 13, CharacterClassAnyDecimalDigitInverted = 14, 
-    CharacterClassAnyBlank = 15, CharacterClassAnyBlankInverted = 16, ZeroOrMoreQuantifier = 17, 
-    OneOrMoreQuantifier = 18, ZeroOrOneQuantifier = 19, RangeQuantifierSeparator = 20, 
-    AnchorStartOfString = 21, AnchorWordBoundary = 22, AnchorNonWordBoundary = 23, 
-    AnchorEndOfString = 24, EscapedChar = 25, Digit = 26, Char = 27
+    T__7 = 8, T__8 = 9, T__9 = 10, AnyCharacter = 11, CharacterClassAnyWord = 12, 
+    CharacterClassAnyWordInverted = 13, CharacterClassAnyDecimalDigit = 14, 
+    CharacterClassAnyDecimalDigitInverted = 15, CharacterClassAnyBlank = 16, 
+    CharacterClassAnyBlankInverted = 17, ZeroOrMoreQuantifier = 18, OneOrMoreQuantifier = 19, 
+    ZeroOrOneQuantifier = 20, AnchorStartOfString = 21, AnchorWordBoundary = 22, 
+    AnchorNonWordBoundary = 23, AnchorEndOfString = 24, EscapedChar = 25, 
+    Digit = 26, Char = 27
   };
 
   enum {
@@ -27,8 +28,8 @@ public:
     RuleCharacterGroupNegativeModifier = 8, RuleCharacterGroupItem = 9, 
     RuleCharacterRange = 10, RuleCharacterClass = 11, RuleQuantifier = 12, 
     RuleLazyModifier = 13, RuleQuantifierType = 14, RuleRangeQuantifier = 15, 
-    RuleRangeQuantifierLowerBound = 16, RuleRangeQuantifierUpperBound = 17, 
-    RuleInteger = 18, RuleAnchor = 19, RuleChar = 20, RuleCharInGroup = 21
+    RuleRangeDelimiter = 16, RuleRangeQuantifierLowerBound = 17, RuleRangeQuantifierUpperBound = 18, 
+    RuleInteger = 19, RuleAnchor = 20, RuleChar = 21, RuleCharInGroup = 22
   };
 
   explicit regexParser(antlr4::TokenStream *input);
@@ -64,6 +65,7 @@ public:
   class LazyModifierContext;
   class QuantifierTypeContext;
   class RangeQuantifierContext;
+  class RangeDelimiterContext;
   class RangeQuantifierLowerBoundContext;
   class RangeQuantifierUpperBoundContext;
   class IntegerContext;
@@ -294,7 +296,7 @@ public:
     RangeQuantifierContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     RangeQuantifierLowerBoundContext *rangeQuantifierLowerBound();
-    antlr4::tree::TerminalNode *RangeQuantifierSeparator();
+    RangeDelimiterContext *rangeDelimiter();
     RangeQuantifierUpperBoundContext *rangeQuantifierUpperBound();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -303,6 +305,18 @@ public:
   };
 
   RangeQuantifierContext* rangeQuantifier();
+
+  class  RangeDelimiterContext : public antlr4::ParserRuleContext {
+  public:
+    RangeDelimiterContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  RangeDelimiterContext* rangeDelimiter();
 
   class  RangeQuantifierLowerBoundContext : public antlr4::ParserRuleContext {
   public:
@@ -367,7 +381,6 @@ public:
     antlr4::tree::TerminalNode *EscapedChar();
     antlr4::tree::TerminalNode *Digit();
     antlr4::tree::TerminalNode *Char();
-    antlr4::tree::TerminalNode *RangeQuantifierSeparator();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -389,7 +402,6 @@ public:
     antlr4::tree::TerminalNode *ZeroOrMoreQuantifier();
     antlr4::tree::TerminalNode *OneOrMoreQuantifier();
     antlr4::tree::TerminalNode *ZeroOrOneQuantifier();
-    antlr4::tree::TerminalNode *RangeQuantifierSeparator();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

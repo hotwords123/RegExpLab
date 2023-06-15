@@ -6,19 +6,19 @@ expression : expressionItem+ ;
 
 expressionItem
   : normalItem quantifier?
-  | anchor // anchor字符，例如^ $ \b等，不匹配实际的字符、而是匹配一种特定的位置 // 本次实验不要求
+  | anchor // anchor字符，例如^ $ \b等，不匹配实际的字符、而是匹配一种特定的位置
   ;
 
 normalItem
   : single // 能匹配一个字符的Item，包括普通的单字符、元字符、字符区间等
   | group // 括号分组
-//  | backreference // 重复此前已经匹配到的某一分组内容一次 // 本次实验不要求
+//  | backreference // 重复此前已经匹配到的某一分组内容一次 // 我们的实验中不要求实现此特性
   ;
 
 /* Group */
 group :
   '('
-  groupNonCapturingModifier? // 非捕获分组，不占用括号分组捕获的序号 // 本次实验不要求
+  groupNonCapturingModifier? // 非捕获分组，不占用括号分组捕获的序号
   regex
   ')'
   ;
@@ -73,25 +73,24 @@ quantifierType
   : ZeroOrMoreQuantifier
   | OneOrMoreQuantifier
   | ZeroOrOneQuantifier
-  | rangeQuantifier // 匹配若干次数范围，如 {2,4} // 本次实验不要求
+  | rangeQuantifier // 匹配若干次数范围，如 {2,4}
   ;
 
 ZeroOrMoreQuantifier : '*';
 OneOrMoreQuantifier : '+';
 ZeroOrOneQuantifier : '?';
 
-rangeQuantifier : '{' rangeQuantifierLowerBound ( RangeQuantifierSeparator rangeQuantifierUpperBound? )? '}';
-RangeQuantifierSeparator: ',';
+/* rangeQuantifier */
+rangeQuantifier : '{' rangeQuantifierLowerBound ( rangeDelimiter rangeQuantifierUpperBound? )? '}';
+rangeDelimiter: ',';
 rangeQuantifierLowerBound : integer;
 rangeQuantifierUpperBound : integer;
 
 integer: Digit+ ;
 
-/* Backreferences 本次实验不要求 */
-//backreference : '\\' integer; // 如\2表示，此处应当匹配的内容，与之前已经匹配到的第2个分组内的内容完全相同。
-//                              // 若此前未匹配到第2个分组，则直接中止匹配。
+//backreference : '\\' integer; // 如\2表示，此处应当匹配的内容，与之前已经匹配到的第2个分组内的内容完全相同。 // 我们的实验中不要求实现此特性
 
-/* Anchors 本次实验不要求 */
+/* Anchors */
 anchor // 以下是本实验要求支持的所有anchor字符
   : AnchorStartOfString
   | AnchorEndOfString
@@ -105,7 +104,7 @@ AnchorNonWordBoundary : '\\B';
 AnchorEndOfString : '$';
 
 /* 字符列表 */
-EscapedChar : '\\' ~[0-9]; // 数字的情况不要做为EscapedChar处理，否则，会造成backreference规则无法被正确解析
+EscapedChar : '\\' ~[0-9]; // 转义字符的含义详见文档中的说明
 Digit : [0-9];
 Char: . ;
 

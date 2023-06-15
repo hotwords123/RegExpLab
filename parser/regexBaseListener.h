@@ -64,6 +64,9 @@ public:
   virtual void enterRangeQuantifier(regexParser::RangeQuantifierContext * /*ctx*/) override { }
   virtual void exitRangeQuantifier(regexParser::RangeQuantifierContext * /*ctx*/) override { }
 
+  virtual void enterRangeDelimiter(regexParser::RangeDelimiterContext * /*ctx*/) override { }
+  virtual void exitRangeDelimiter(regexParser::RangeDelimiterContext * /*ctx*/) override { }
+
   virtual void enterRangeQuantifierLowerBound(regexParser::RangeQuantifierLowerBoundContext * /*ctx*/) override { }
   virtual void exitRangeQuantifierLowerBound(regexParser::RangeQuantifierLowerBoundContext * /*ctx*/) override { }
 

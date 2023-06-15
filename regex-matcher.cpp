@@ -61,7 +61,7 @@ void RegexMatcher::appendReplacement(std::string &target, const std::string &rep
                 int index = 0;
                 do {
                     index = index * 10 + (next - '0');
-                    next = replacement[++i];
+                    next = replacement[++i + 1];
                 } while (std::isdigit(next));
                 if (index <= regex.group_count) {
                     auto [begin, end] = group_pos[index];

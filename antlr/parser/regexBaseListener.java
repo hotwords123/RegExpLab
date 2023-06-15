@@ -208,6 +208,18 @@ public class regexBaseListener implements regexListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRangeDelimiter(regexParser.RangeDelimiterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRangeDelimiter(regexParser.RangeDelimiterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterRangeQuantifierLowerBound(regexParser.RangeQuantifierLowerBoundContext ctx) { }
 	/**
 	 * {@inheritDoc}

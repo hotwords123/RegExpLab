@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
     } while (n == BUFSIZE);
     if (!feof(f)) throw std::system_error(errno, std::generic_category());
 
-    std::string type, pattern, flags, input_str;
-    bool pattern_found = false, input_str_found = false;
+    std::string type, pattern, flags, input_str, replacement;
+    bool pattern_found = false, input_str_found = false, replacement_found = false;
     std::istringstream ss(text);
     std::string line;
     size_t lenBeforeInputLine = 0;
@@ -44,6 +44,9 @@ int main(int argc, char *argv[]) {
             pattern_found = true;
         } else if (line.find("flags:") == 0) {
             flags = strip(line.substr(6));
+        } else if (line.find("replacement: ") == 0) {
+            replacement = line.substr(13);
+            replacement_found = true;
         } else if (line.find("input: ") == 0) {
             input_str = text.substr(lenBeforeInputLine + 7);
             input_str_found = true;
@@ -53,11 +56,17 @@ int main(int argc, char *argv[]) {
     if (!pattern_found || !input_str_found)
         throw std::runtime_error("pattern或input未找到！注意pattern: 和input: ，冒号后面必须有空格！");
 
-    if (type == "find") {
-        Regex regex = regex.compile(pattern, flags);
-        std::vector<std::string> matchRes = regex.match(input_str);
-        nlohmann::json jsonArr(matchRes);
-        std::cout << jsonArr << std::endl;
+    Regex regex = Regex::compile(pattern, flags);
+    if (type == "find" || type == "match") {
+        std::vector<std::string> result = regex.match(input_str);
+        std::cout << nlohmann::json(result) << std::endl;
+    } else if (type == "matchAll") {
+        std::vector<std::vector<std::string>> result = regex.matchAll(input_str);
+        std::cout << nlohmann::json(result) << std::endl;
+    } else if (type == "replaceAll") {
+        if (!replacement_found) throw std::runtime_error("type=replaceAll的输入，但是未找到replacement字段！");
+        std::string result = regex.replaceAll(input_str, replacement);
+        std::cout << result;
     } else {
         throw std::runtime_error("不支持的输入文件类型！");
     }
