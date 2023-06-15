@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
         f = fopen(argv[1], "r");
         if (!f) throw std::system_error(errno, std::generic_category());
     } else f = stdin;
+    setStdoutToBinary();
 
     std::string text;
     const int BUFSIZE = 4096;
