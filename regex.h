@@ -48,13 +48,15 @@ class Regex {
     friend class RegexCompileListener;
     friend class RegexMatcher;
 
+    // 只能通过 compile 方法构造 Regex 对象
+    Regex() = default;
+
 public:
     using Flag = unsigned int;
 
     static constexpr Flag kMultiline = 1u << 0;
     static constexpr Flag kDotAll = 1u << 1;
 
-    Regex() = default;
     Regex(Regex &&) = default;
 
     /**
