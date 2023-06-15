@@ -1,5 +1,7 @@
 #include "regex.h"
 #include "regex-compile-listener.h"
+#include "regex-matcher.h"
+#include <cctype>
 
 /**
  * 注：如果你愿意，你可以自由的using namespace。
@@ -34,60 +36,53 @@ Regex Regex::compile(const std::string &pattern, const std::string &flags) {
     return regex;
 }
 
-/**
- * 在给定的输入文本上，进行正则表达式匹配，返回匹配到的第一个结果。
- * 匹配不成功时，返回空vector( return std::vector<std::string>(); ，或使用返回初始化列表的语法 return {}; )；
- * 匹配成功时，返回一个std::vector<std::string>，其中下标为0的元素是匹配到的字符串，
- * 下标为i(i>=1)的元素是匹配结果中的第i个分组。
- * （第二次实验中不要求支持分组功能，返回的vector中只含一个元素即可）
- * @param text 输入的文本
- * @return 如上所述
- */
 std::vector<std::string> Regex::match(const std::string &text) {
-    Path path = nfa.exec(text, true);
-    if (path.states.size() == 0) return {};
+    RegexMatcher matcher(*this, text);
+    if (matcher.match()) return matcher.groups();
+    return {};
+}
 
-    // 捕获组匹配子串的起始位置
-    std::vector<std::pair<int, int>> group_pos(group_count + 1);
-    // 当前是否处在捕获组中
-    std::vector<bool> in_group(group_count + 1);
-
-    // 计算匹配开始的位置
-    int step = 0;
-    while (path.states[step + 1] == 0) step++;
-
-    int pos = step;
-    group_pos[0].first = pos;
-    in_group[0] = true;
-
-    // 计算捕获组的匹配位置
-    for (; step < (int)path.consumes.size(); step++) {
-        int state = path.states[step + 1]; // 当前状态
-        pos += path.consumes[step].length();
-
-        if (int index = group_map[state]) { // 找到对应的捕获组
-            if (!in_group[index]) { // 捕获组开始
-                group_pos[index].first = pos;
-                in_group[index] = true;
-            } else { // 捕获组结束
-                group_pos[index].second = pos;
-                in_group[index] = false;
-            }
-        }
-    }
-
-    // 计算匹配结束的位置
-    group_pos[0].second = pos;
-    in_group[0] = false;
-
-    // 生成匹配结果
-    std::vector<std::string> results;
-    results.reserve(group_count + 1);
-    for (auto [begin, end] : group_pos) {
-        // TODO: 处理捕获组未匹配的情况
-        results.push_back(text.substr(begin, end - begin));
+std::vector<std::vector<std::string>> Regex::matchAll(const std::string &text) {
+    RegexMatcher matcher(*this, text);
+    std::vector<std::vector<std::string>> results;
+    int pos = 0;
+    while (pos <= (int)text.length() && matcher.match(pos)) {
+        results.push_back(matcher.groups());
+        // 从上一个匹配的末尾继续匹配，需要特判匹配空串的情况
+        pos = std::max(pos + 1, matcher.groupPos(0).second);
     }
     return results;
+}
+
+std::string Regex::replace(const std::string &text, const std::string &replacement) {
+    RegexMatcher matcher(*this, text);
+    if (matcher.match()) {
+        auto [begin, end] = matcher.groupPos(0);
+        std::string result(text, 0, begin);
+        matcher.appendReplacement(result, replacement);
+        result.append(text, end);
+        return result;
+    }
+    return text;
+}
+
+std::string Regex::replaceAll(const std::string &text, const std::string &replacement) {
+    RegexMatcher matcher(*this, text);
+    std::string result;
+    int pos = 0;
+    while (matcher.match(pos)) {
+        auto [begin, end] = matcher.groupPos(0);
+        result.append(text, pos, begin - pos);
+        matcher.appendReplacement(result, replacement);
+        if (pos == (int)text.length()) break;
+        if (pos == end) { // 匹配空串
+            result.push_back(text[pos++]);
+        } else {
+            pos = end;
+        }
+    }
+    result.append(text, pos);
+    return result;
 }
 
 Regex::ParseUtil::ParseUtil(const std::string &pattern)

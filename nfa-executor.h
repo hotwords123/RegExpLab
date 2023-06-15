@@ -15,7 +15,10 @@ struct std::hash<std::pair<T1, T2>> {
     result_type operator()(const argument_type &value) const {
         size_t h1 = std::hash<T1>{}(value.first);
         size_t h2 = std::hash<T2>{}(value.second);
-        return h1 ^ (h2 >> 1);
+        h2 ^= h2 << 2;
+        h2 ^= h2 << 7;
+        h2 ^= h2 >> 7;
+        return h1 ^ h2;
     }
 };
 

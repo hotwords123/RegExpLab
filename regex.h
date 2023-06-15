@@ -45,6 +45,7 @@ class Regex {
     };
 
     friend class RegexCompileListener;
+    friend class RegexMatcher;
 
 public:
     using Flag = unsigned int;
@@ -76,6 +77,12 @@ public:
      * @return 如上所述
      */
     std::vector<std::string> match(const std::string &text);
+
+    std::vector<std::vector<std::string>> matchAll(const std::string &text);
+
+    std::string replace(const std::string &text, const std::string &replacement);
+
+    std::string replaceAll(const std::string &text, const std::string &replacement);
 };
 
 #endif // CPP_REGEX_H

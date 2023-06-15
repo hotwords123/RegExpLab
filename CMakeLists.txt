@@ -25,7 +25,7 @@ add_executable(nfa main-nfa.cpp
 
 add_executable(regex main-regex.cpp
     nfa.cpp nfa.h rule.cpp rule.h nfa-executor.cpp nfa-executor.h utils.h
-    regex.cpp regex.h nfa-fragment.h
+    regex.cpp regex.h nfa-fragment.h regex-matcher.h regex-matcher.cpp
     regex-compile-listener.cpp regex-compile-listener.h
     parser/regexLexer.cpp parser/regexLexer.h
     parser/regexParser.cpp parser/regexParser.h
